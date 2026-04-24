@@ -6,11 +6,13 @@ import SettingsPanel from '../components/SettingsPanel';
 import LeadsTab from '../components/LeadsTab';
 import AnalyticsTab from '../components/AnalyticsTab';
 
+import { useAuth } from '../context/AuthContext';
 import CONFIG from '../config';
 
 const API_BASE = `${CONFIG.API_BASE}/api`;
 
 export default function Dashboard() {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('reviews');
   const [autoReply, setAutoReply] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -23,10 +25,11 @@ export default function Dashboard() {
   // 1. Fetch data on mount
   useEffect(() => {
     const fetchData = async () => {
+      if (!user?.email) return;
       try {
         const [reviewsRes, settingsRes] = await Promise.all([
-          fetch(`${API_BASE}/reviews`),
-          fetch(`${API_BASE}/settings`)
+          fetch(`${API_BASE}/reviews?email=${user.email}`),
+          fetch(`${API_BASE}/settings?email=${user.email}`)
         ]);
         
         const reviewsData = await reviewsRes.json();
