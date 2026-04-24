@@ -22,7 +22,12 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
         setIsConnected(data.connected);
         
         if (data.connected) {
-          fetchGoogleData();
+          // Only fetch enrolled data from OUR database on mount (it's fast and has no quota)
+          const enrolledRes = await fetch(`${CONFIG.API_BASE}/google/enrolled?email=${user.email}`);
+          const enrolledData = await enrolledRes.json();
+          if (enrolledData.length > 0) {
+            setLocations(enrolledData);
+          }
         }
       } catch (err) {
         console.error('Failed to check Google connection status');
@@ -32,26 +37,20 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
     };
 
     if (user?.email) checkConnection();
-  }, [user]);
+  }, [user?.email]);
 
   const fetchGoogleData = async () => {
     try {
+      setSyncing(true);
       setError(null);
       
-      // 1. Fetch Enrolled Locations (FAST FALLBACK)
-      const enrolledRes = await fetch(`${CONFIG.API_BASE}/google/enrolled?email=${user.email}`);
-      const enrolledData = await enrolledRes.json();
-      if (enrolledData.length > 0) {
-        setLocations(enrolledData);
-      }
-
-      // 2. Fetch Accounts from Google
+      // 1. Fetch Accounts from Google
       const accRes = await fetch(`${CONFIG.API_BASE}/google/accounts?email=${user.email}`);
       const accData = await accRes.json();
       
       if (accData.error) {
         if (accRes.status === 429) {
-          setError('Google rate limit reached. Please wait a few minutes and try again.');
+          setError('Google rate limit reached. Please wait 10-15 minutes.');
         } else {
           setError(accData.error);
         }
@@ -61,19 +60,14 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       setAccounts(accData);
 
       if (accData.length > 0) {
-        // 2. Fetch Locations for first account
         const locRes = await fetch(`${CONFIG.API_BASE}/google/locations/${accData[0].name.split('/')[1]}?email=${user.email}`);
         const locData = await locRes.json();
-        
-        if (locData.error) {
-          setError(locData.error);
-        } else {
-          setLocations(locData);
-        }
+        if (!locData.error) setLocations(locData);
       }
     } catch (err) {
       console.error('Error fetching Google Business data:', err);
-      setError('Failed to reach the server.');
+    } finally {
+      setSyncing(false);
     }
   };
 
