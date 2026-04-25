@@ -97,26 +97,28 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
     setSyncing(true);
     setSyncResult(null);
     try {
-      // Use Account ID from database if available (bypass Google rate limit)
-      const accountId = locations[0].accountId || (accounts.length > 0 ? accounts[0].name : null);
-      
-      if (!accountId) {
-        throw new Error('Connection incomplete. Please wait for Google rate limit to reset (5-10 mins).');
-      }
-
+      // Just send the request - the backend is now smart enough to resolve missing IDs
       const response = await fetch(`${CONFIG.API_BASE}/google/sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: user.email,
-          accountId: accountId,
-          locationId: locations[0].name.split('/').pop()
+          locationId: locations[0].name.split('/').pop(),
+          // Pass accountId only if we have it locally, otherwise backend handles it
+          accountId: locations[0].accountId || (accounts.length > 0 ? accounts[0].name : null)
         })
       });
       const data = await response.json();
-      setSyncResult(`Successfully synced ${data.count} reviews!`);
+      
+      if (data.success) {
+        setSyncResult(`Successfully synced ${data.count} reviews! Refreshing...`);
+        // Trigger a refresh of the dashboard reviews
+        setTimeout(() => window.location.reload(), 2000);
+      } else {
+        setSyncResult(`Sync failed: ${data.error || 'Unknown error'}`);
+      }
     } catch (err) {
-      setSyncResult('Failed to sync reviews.');
+      setSyncResult('Failed to reach the server. Check your connection.');
     } finally {
       setSyncing(false);
     }
