@@ -3,9 +3,11 @@ import { useAuth } from '../context/AuthContext';
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
   const { user } = useAuth();
+  const isAdmin = user?.email === 'noutpelgrim@hotmail.com';
+
   const tabs = [
     { id: 'reviews', label: 'Reviews', icon: '💬' },
-    { id: 'leads', label: 'Prospects', icon: '🚀' },
+    ...(isAdmin ? [{ id: 'leads', label: 'Prospects', icon: '🚀' }] : []),
     { id: 'settings', label: 'Automation', icon: '⚙️' },
     { id: 'analytics', label: 'Analytics', icon: '📊' }
   ];

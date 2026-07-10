@@ -112,34 +112,40 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
         )}
       </div>
 
-      <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
-        <button
-          onClick={() => onRegenerate(review.id)}
-          style={{
-            padding: '10px 20px',
-            borderRadius: '8px',
-            background: 'transparent',
-            border: '1px solid hsl(var(--border))',
-            color: 'hsl(var(--text-muted))',
-            fontSize: '0.9rem'
-          }}
-        >
-          🔄 Regenerate
-        </button>
-        <button
-          onClick={() => onApprove(review.id, draft)}
-          style={{
-            padding: '10px 24px',
-            borderRadius: '8px',
-            background: 'hsl(var(--primary))',
-            color: 'white',
-            fontWeight: '600',
-            fontSize: '0.9rem'
-          }}
-        >
-          ✅ Approve & Post
-        </button>
-      </div>
+      {review.status === 'PUBLISHED' ? (
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'flex-end', color: '#00C9A7', fontWeight: '700', fontSize: '0.9rem' }}>
+          <span>✓ Replied on Google Maps</span>
+        </div>
+      ) : (
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => onRegenerate(review.id)}
+            style={{
+              padding: '10px 20px',
+              borderRadius: '8px',
+              background: 'transparent',
+              border: '1px solid hsl(var(--border))',
+              color: 'hsl(var(--text-muted))',
+              fontSize: '0.9rem'
+            }}
+          >
+            🔄 Regenerate
+          </button>
+          <button
+            onClick={() => onApprove(review.id, draft)}
+            style={{
+              padding: '10px 24px',
+              borderRadius: '8px',
+              background: 'hsl(var(--primary))',
+              color: 'white',
+              fontWeight: '600',
+              fontSize: '0.9rem'
+            }}
+          >
+            ✅ Approve & Post
+          </button>
+        </div>
+      )}
     </div>
   );
 };

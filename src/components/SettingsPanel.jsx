@@ -14,31 +14,6 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
   
   const tones = ['Friendly', 'Professional', 'Premium'];
 
-  useEffect(() => {
-    const checkConnection = async () => {
-      try {
-        const response = await fetch(`${CONFIG.API_BASE}/auth/status/${user.email}`);
-        const data = await response.json();
-        setIsConnected(data.connected);
-        
-        if (data.connected) {
-          // Only fetch enrolled data from OUR database on mount (it's fast and has no quota)
-          const enrolledRes = await fetch(`${CONFIG.API_BASE}/google/enrolled?email=${user.email}`);
-          const enrolledData = await enrolledRes.json();
-          if (enrolledData.length > 0) {
-            setLocations(enrolledData);
-          }
-        }
-      } catch (err) {
-        console.error('Failed to check Google connection status');
-      } finally {
-        setChecking(false);
-      }
-    };
-
-    if (user?.email) checkConnection();
-  }, [user?.email]);
-
   const fetchGoogleData = async () => {
     try {
       setSyncing(true);
@@ -70,6 +45,34 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       setSyncing(false);
     }
   };
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      try {
+        const response = await fetch(`${CONFIG.API_BASE}/auth/status/${user.email}`);
+        const data = await response.json();
+        setIsConnected(data.connected);
+        
+        if (data.connected) {
+          // Only fetch enrolled data from OUR database on mount (it's fast and has no quota)
+          const enrolledRes = await fetch(`${CONFIG.API_BASE}/google/enrolled?email=${user.email}`);
+          const enrolledData = await enrolledRes.json();
+          if (enrolledData.length > 0) {
+            setLocations(enrolledData);
+          } else {
+            // Fetch from Google if nothing enrolled yet
+            fetchGoogleData();
+          }
+        }
+      } catch (err) {
+        console.error('Failed to check Google connection status');
+      } finally {
+        setChecking(false);
+      }
+    };
+
+    if (user?.email) checkConnection();
+  }, [user?.email]);
 
   const handleConnect = () => {
     window.location.href = `${CONFIG.API_BASE}/auth/google?email=${user.email}`;

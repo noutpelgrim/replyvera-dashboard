@@ -1,21 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import CONFIG from '../config';
+import { useAuth } from '../context/AuthContext';
 
 const AnalyticsTab = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const { user } = useAuth();
+
   useEffect(() => {
-    fetch(`${CONFIG.API_BASE}/api/analytics`)
+    if (!user?.email) return;
+    fetch(`${CONFIG.API_BASE}/api/analytics?email=${user.email}`)
       .then(res => res.json())
       .then(data => {
         setStats(data);
         setLoading(false);
       })
-      .catch(err => console.error('Failed to fetch analytics:', err));
-  }, []);
+      .catch(err => {
+        console.error('Failed to fetch analytics:', err);
+        setLoading(false);
+      });
+  }, [user?.email]);
 
   if (loading) return <div style={{ color: 'white', padding: '20px' }}>Analyzing business performance...</div>;
+  if (!stats || stats.error) return <div style={{ color: '#ff4d4d', padding: '20px' }}>Failed to load analytics: {stats?.error || 'Unknown error'}</div>;
 
   const MetricCard = ({ title, value, subtext, icon }) => (
     <div className="glass" style={{ padding: '24px', borderRadius: '16px', display: 'flex', gap: '20px', alignItems: 'center' }}>

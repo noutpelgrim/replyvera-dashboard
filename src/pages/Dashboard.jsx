@@ -14,15 +14,16 @@ const API_BASE = `${CONFIG.API_BASE}/api`;
 export default function Dashboard() {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('reviews');
-  const [autoReply, setAutoReply] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [reviews, setReviews] = useState([]);
   const [settings, setSettings] = useState({
     tone: 'Professional',
     minRating: 4,
     instructions: ''
   });
+  const [autoReply, setAutoReply] = useState(false);
 
-  // 1. Fetch data on mount
+  // 1. Fetch data on mount AND whenever refreshTrigger changes
   useEffect(() => {
     const fetchData = async () => {
       if (!user?.email) return;
@@ -62,16 +63,20 @@ export default function Dashboard() {
       });
       if (res.ok) {
         setReviews(reviews.map(r => r.id === id ? { ...r, status: 'PUBLISHED', drafted_reply: draft } : r));
+      } else {
+        const errorData = await res.json();
+        alert(`Posting failed: ${errorData.error || 'Unknown error'}`);
       }
     } catch (err) {
       console.error('Approval failed:', err);
+      alert('Network error - check if backend is running.');
     }
   };
 
   // 3. Handle Settings Save
   const handleSettingsSave = async (newSettings) => {
     try {
-      const res = await fetch(`${API_BASE}/settings`, {
+      const res = await fetch(`${API_BASE}/settings?email=${user.email}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -112,6 +117,9 @@ export default function Dashboard() {
       
       <main style={{ marginLeft: '280px', flex: 1, padding: '40px', maxWidth: '1000px' }}>
         <Header autoReply={autoReply} setAutoReply={setAutoReply} />
+        <div style={{ padding: '10px', background: '#ff4d4d', color: 'white', borderRadius: '8px', marginBottom: '20px', textAlign: 'center', fontWeight: 'bold' }}>
+          🚨 CONNECTION VERIFIED: VERSION 4.0 ACTIVE 🚨
+        </div>
 
         {activeTab === 'reviews' && (
           <div className="fade-in">
