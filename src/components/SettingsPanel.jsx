@@ -12,6 +12,40 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
   const [syncResult, setSyncResult] = useState(null);
   const [error, setError] = useState(null);
   
+  const [previewReview, setPreviewReview] = useState('Super nice stay! Friendly staff and great atmosphere.');
+  const [previewResult, setPreviewResult] = useState('');
+  const [loadingPreview, setLoadingPreview] = useState(false);
+  
+  const handleGeneratePreview = async () => {
+    setLoadingPreview(true);
+    setPreviewResult('');
+    try {
+      const businessName = locations.length > 0 ? locations[0].title : 'The Mudhouse Hostel';
+      const response = await fetch(`${CONFIG.API_BASE}/api/settings/preview`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          comment: previewReview,
+          rating: 5,
+          tone: settings.tone,
+          instructions: settings.instructions,
+          businessName: businessName
+        })
+      });
+      const data = await response.json();
+      if (data.preview) {
+        setPreviewResult(data.preview);
+      } else {
+        setPreviewResult(data.error || 'Failed to generate preview.');
+      }
+    } catch (err) {
+      console.error(err);
+      setPreviewResult('Failed to reach the server.');
+    } finally {
+      setLoadingPreview(false);
+    }
+  };
+  
   const tones = ['Friendly', 'Professional', 'Premium'];
 
   const fetchGoogleData = async () => {
@@ -202,6 +236,70 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           >
             Save Automation Settings
           </button>
+
+          {/* AI Preview Section */}
+          <div style={{
+            marginTop: '24px',
+            paddingTop: '24px',
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '16px'
+          }}>
+            <div>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'white', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span>✨</span> Live AI Reply Preview
+              </h3>
+              <p style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))', marginTop: '4px' }}>
+                Test how Vera replies using your current tone and instructions.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <label style={{ fontSize: '0.8rem', fontWeight: '600' }}>Sample Review</label>
+              <textarea
+                value={previewReview}
+                onChange={(e) => setPreviewReview(e.target.value)}
+                placeholder="Type a sample customer review here..."
+                style={{ width: '100%', minHeight: '60px', padding: '10px', fontSize: '0.85rem', borderRadius: '8px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', color: 'white' }}
+              />
+            </div>
+
+            <button
+              onClick={handleGeneratePreview}
+              disabled={loadingPreview || !previewReview.trim()}
+              style={{
+                padding: '10px',
+                borderRadius: '8px',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: 'white',
+                fontSize: '0.85rem',
+                fontWeight: '600',
+                opacity: (loadingPreview || !previewReview.trim()) ? 0.5 : 1,
+                cursor: 'pointer'
+              }}
+            >
+              {loadingPreview ? 'Generating draft...' : 'Test AI Response'}
+            </button>
+
+            {previewResult && (
+              <div style={{
+                padding: '16px',
+                background: 'rgba(108, 71, 255, 0.05)',
+                border: '1px solid rgba(108, 71, 255, 0.2)',
+                borderRadius: '10px',
+                fontSize: '0.85rem',
+                lineHeight: '1.5',
+                color: '#E0E0FF'
+              }}>
+                <div style={{ fontSize: '0.7rem', fontWeight: '700', color: 'hsl(var(--primary))', marginBottom: '6px', textTransform: 'uppercase' }}>
+                  Vera's Draft Response
+                </div>
+                "{previewResult}"
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
