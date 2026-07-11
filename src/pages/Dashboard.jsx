@@ -20,6 +20,7 @@ export default function Dashboard() {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [settings, setSettings] = useState({
     tone: 'Professional',
+    language: 'auto',
     minRating: 4,
     instructions: ''
   });
@@ -54,6 +55,7 @@ export default function Dashboard() {
         if (settingsData) {
           setSettings({
             tone: settingsData.reply_tone || 'Professional',
+            language: settingsData.reply_language || 'auto',
             minRating: settingsData.min_rating_threshold || 4,
             instructions: '', // Instructions not yet in DB schema
             automation_enabled: settingsData.automation_enabled
@@ -96,6 +98,7 @@ export default function Dashboard() {
         body: JSON.stringify({
           automation_enabled: autoReply,
           reply_tone: newSettings.tone,
+          reply_language: newSettings.language,
           min_rating_threshold: newSettings.minRating
         })
       });

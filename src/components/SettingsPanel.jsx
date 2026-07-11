@@ -202,6 +202,31 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>Reply Language</label>
+            <select
+              value={settings.language || 'auto'}
+              onChange={(e) => setSettings({ ...settings, language: e.target.value })}
+              style={{
+                width: '100%',
+                padding: '10px 12px',
+                borderRadius: '12px',
+                background: 'rgba(255,255,255,0.05)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: 'white',
+                fontSize: '0.85rem',
+                fontWeight: '600',
+                outline: 'none',
+                cursor: 'pointer'
+              }}
+            >
+              <option value="auto" style={{ background: '#1A1A32', color: 'white' }}>Auto-Detect (Reply in customer's language)</option>
+              <option value="en" style={{ background: '#1A1A32', color: 'white' }}>Always English</option>
+              <option value="nl" style={{ background: '#1A1A32', color: 'white' }}>Always Dutch (Nederlands)</option>
+              <option value="es" style={{ background: '#1A1A32', color: 'white' }}>Always Spanish (Español)</option>
+            </select>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>Minimum Rating to Auto-Reply</label>
             <input
               type="number"
