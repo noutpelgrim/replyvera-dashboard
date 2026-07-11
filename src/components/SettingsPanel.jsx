@@ -300,25 +300,42 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               </button>
             </div>
           ) : (
-            <button 
-              onClick={handleConnect}
-              style={{
-                width: '100%',
-                padding: '14px',
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+              <button 
+                onClick={handleConnect}
+                style={{
+                  width: '100%',
+                  padding: '14px',
+                  borderRadius: '12px',
+                  background: '#4285F4',
+                  color: 'white',
+                  fontWeight: '700',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '12px',
+                  border: 'none',
+                  cursor: 'pointer'
+                }}
+              >
+                Connect with Google
+              </button>
+              
+              <div style={{
+                padding: '16px',
+                background: 'rgba(255,255,255,0.02)',
+                border: '1px solid rgba(255,255,255,0.06)',
                 borderRadius: '12px',
-                background: '#4285F4',
-                color: 'white',
-                fontWeight: '700',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '12px',
-                border: 'none',
-                cursor: 'pointer'
-              }}
-            >
-              Connect with Google
-            </button>
+                fontSize: '0.8rem',
+                color: 'hsl(var(--text-muted))',
+                lineHeight: '1.4'
+              }}>
+                <div style={{ fontWeight: '700', color: 'white', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span>🔒</span> Waarom vraagt Google om beheer- en verwijderrechten?
+                </div>
+                Google bundelt alle review- en profielrechten in één standaardpakket genaamd <i>'Business Profile Management'</i>. ReplyVera gebruikt dit <b>uitsluitend</b> om je reviews in te laden en antwoorden te kunnen plaatsen. Wij zullen nooit wijzigingen aanbrengen in je bedrijfsinformatie of je listings verwijderen.
+              </div>
+            </div>
           )}
         </div>
       </div>
