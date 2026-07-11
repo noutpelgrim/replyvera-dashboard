@@ -223,6 +223,10 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               <option value="en" style={{ background: '#1A1A32', color: 'white' }}>Always English</option>
               <option value="nl" style={{ background: '#1A1A32', color: 'white' }}>Always Dutch (Nederlands)</option>
               <option value="es" style={{ background: '#1A1A32', color: 'white' }}>Always Spanish (Español)</option>
+              <option value="de" style={{ background: '#1A1A32', color: 'white' }}>Always German (Deutsch)</option>
+              <option value="fr" style={{ background: '#1A1A32', color: 'white' }}>Always French (Français)</option>
+              <option value="it" style={{ background: '#1A1A32', color: 'white' }}>Always Italian (Italiano)</option>
+              <option value="pt" style={{ background: '#1A1A32', color: 'white' }}>Always Portuguese (Português)</option>
             </select>
           </div>
 
