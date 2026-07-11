@@ -24,6 +24,9 @@ export default function Dashboard() {
     instructions: ''
   });
   const [autoReply, setAutoReply] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [ratingFilter, setRatingFilter] = useState('all');
+  const [statusFilter, setStatusFilter] = useState('all');
 
   // 1. Fetch data on mount AND whenever refreshTrigger changes
   useEffect(() => {
@@ -122,6 +125,23 @@ export default function Dashboard() {
     }
   };
 
+  const filteredReviews = reviews
+    .filter(r => !selectedLocation || r.location_id === selectedLocation.id)
+    .filter(r => {
+      // 1. Search filter
+      const term = searchTerm.toLowerCase();
+      const matchesSearch = r.reviewer_name.toLowerCase().includes(term) || 
+                            r.comment.toLowerCase().includes(term);
+      
+      // 2. Rating filter
+      const matchesRating = ratingFilter === 'all' || r.rating === parseInt(ratingFilter);
+      
+      // 3. Status filter
+      const matchesStatus = statusFilter === 'all' || r.status === statusFilter;
+      
+      return matchesSearch && matchesRating && matchesStatus;
+    });
+
   return (
     <div style={{ display: 'flex' }}>
       <Sidebar 
@@ -139,21 +159,112 @@ export default function Dashboard() {
         </div>
 
         {activeTab === 'reviews' && (
-          <div className="fade-in">
-            {reviews.filter(r => !selectedLocation || r.location_id === selectedLocation.id).length > 0 ? (
-              reviews
-                .filter(r => !selectedLocation || r.location_id === selectedLocation.id)
-                .map(review => (
-                  <ReviewCard 
-                    key={review.id} 
-                    review={review} 
-                    onApprove={handleApprove}
-                    onRegenerate={handleRegenerate}
-                  />
-                ))
+          <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            
+            {/* Filter Toolbar */}
+            <div className="glass" style={{
+              padding: '16px 24px',
+              borderRadius: '16px',
+              display: 'flex',
+              flexWrap: 'wrap',
+              gap: '16px',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              background: 'rgba(255,255,255,0.02)',
+              border: '1px solid rgba(255,255,255,0.06)'
+            }}>
+              {/* Search Box */}
+              <div style={{ position: 'relative', flex: '1 1 240px' }}>
+                <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'hsl(var(--text-muted))', fontSize: '0.9rem' }}>🔍</span>
+                <input
+                  type="text"
+                  placeholder="Search reviews or reviewer..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '10px 12px 10px 38px',
+                    borderRadius: '10px',
+                    background: 'rgba(0, 0, 0, 0.2)',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    color: 'white',
+                    fontSize: '0.85rem',
+                    outline: 'none'
+                  }}
+                />
+              </div>
+
+              {/* Filter controls */}
+              <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
+                {/* Rating Filter */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Rating:</label>
+                  <select
+                    value={ratingFilter}
+                    onChange={(e) => setRatingFilter(e.target.value)}
+                    style={{
+                      padding: '8px 12px',
+                      borderRadius: '8px',
+                      background: 'rgba(0, 0, 0, 0.2)',
+                      border: '1px solid rgba(255,255,255,0.06)',
+                      color: 'white',
+                      fontSize: '0.8rem',
+                      fontWeight: '600',
+                      outline: 'none',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <option value="all">All Stars</option>
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="2">2 Stars</option>
+                    <option value="1">1 Star</option>
+                  </select>
+                </div>
+
+                {/* Status Filter */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status:</label>
+                  <div style={{ display: 'flex', background: 'rgba(0,0,0,0.2)', padding: '2px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                    {['all', 'PENDING', 'PUBLISHED'].map(status => (
+                      <button
+                        key={status}
+                        onClick={() => setStatusFilter(status)}
+                        style={{
+                          padding: '6px 12px',
+                          borderRadius: '6px',
+                          background: statusFilter === status ? 'hsl(var(--primary))' : 'transparent',
+                          color: statusFilter === status ? 'white' : 'hsl(var(--text-muted))',
+                          fontSize: '0.75rem',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s ease',
+                          border: 'none',
+                          outline: 'none'
+                        }}
+                      >
+                        {status === 'all' ? 'All' : status}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Reviews List */}
+            {filteredReviews.length > 0 ? (
+              filteredReviews.map(review => (
+                <ReviewCard 
+                  key={review.id} 
+                  review={review} 
+                  onApprove={handleApprove}
+                  onRegenerate={handleRegenerate}
+                />
+              ))
             ) : (
               <div className="glass" style={{ padding: '40px', textAlign: 'center' }}>
-                <p style={{ color: 'hsl(var(--text-muted))' }}>No reviews found for this location.</p>
+                <p style={{ color: 'hsl(var(--text-muted))' }}>No reviews match your filters.</p>
               </div>
             )}
           </div>
