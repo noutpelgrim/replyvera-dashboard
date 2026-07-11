@@ -16,6 +16,8 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState('reviews');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [reviews, setReviews] = useState([]);
+  const [locations, setLocations] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const [settings, setSettings] = useState({
     tone: 'Professional',
     minRating: 4,
@@ -28,6 +30,15 @@ export default function Dashboard() {
     const fetchData = async () => {
       if (!user?.email) return;
       try {
+        // Fetch locations first
+        const locationsRes = await fetch(`${CONFIG.API_BASE}/google/enrolled?email=${user.email}`);
+        const locationsData = await locationsRes.json();
+        setLocations(locationsData || []);
+        
+        if (locationsData && locationsData.length > 0) {
+          setSelectedLocation(locationsData[0]);
+        }
+
         const [reviewsRes, settingsRes] = await Promise.all([
           fetch(`${API_BASE}/reviews?email=${user.email}`),
           fetch(`${API_BASE}/settings?email=${user.email}`)
@@ -51,7 +62,7 @@ export default function Dashboard() {
       }
     };
     fetchData();
-  }, []);
+  }, [user?.email, refreshTrigger]);
 
   // 2. Handle Review Approval
   const handleApprove = async (id, draft) => {
@@ -113,7 +124,13 @@ export default function Dashboard() {
 
   return (
     <div style={{ display: 'flex' }}>
-      <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Sidebar 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab} 
+        locations={locations}
+        selectedLocation={selectedLocation}
+        setSelectedLocation={setSelectedLocation}
+      />
       
       <main style={{ marginLeft: '280px', flex: 1, padding: '40px', maxWidth: '1000px' }}>
         <Header autoReply={autoReply} setAutoReply={setAutoReply} />
@@ -123,18 +140,20 @@ export default function Dashboard() {
 
         {activeTab === 'reviews' && (
           <div className="fade-in">
-            {reviews.length > 0 ? (
-              reviews.map(review => (
-                <ReviewCard 
-                  key={review.id} 
-                  review={review} 
-                  onApprove={handleApprove}
-                  onRegenerate={handleRegenerate}
-                />
-              ))
+            {reviews.filter(r => !selectedLocation || r.location_id === selectedLocation.id).length > 0 ? (
+              reviews
+                .filter(r => !selectedLocation || r.location_id === selectedLocation.id)
+                .map(review => (
+                  <ReviewCard 
+                    key={review.id} 
+                    review={review} 
+                    onApprove={handleApprove}
+                    onRegenerate={handleRegenerate}
+                  />
+                ))
             ) : (
               <div className="glass" style={{ padding: '40px', textAlign: 'center' }}>
-                <p style={{ color: 'hsl(var(--text-muted))' }}>No reviews found in the database.</p>
+                <p style={{ color: 'hsl(var(--text-muted))' }}>No reviews found for this location.</p>
               </div>
             )}
           </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 
-const Sidebar = ({ activeTab, setActiveTab }) => {
+const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSelectedLocation }) => {
   const { user } = useAuth();
   const isAdmin = user?.email === 'noutpelgrim@hotmail.com';
 
@@ -46,6 +46,40 @@ const Sidebar = ({ activeTab, setActiveTab }) => {
           Reply<span style={{ color: '#8B6FFF' }}>Vera</span>
         </h2>
       </div>
+
+      {/* Location Selector (Dropdown) */}
+      {locations && locations.length > 0 && (
+        <div style={{ marginBottom: '24px' }}>
+          <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', display: 'block', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            📍 Active Location
+          </label>
+          <select
+            value={selectedLocation ? selectedLocation.name : ''}
+            onChange={(e) => {
+              const loc = locations.find(l => l.name === e.target.value);
+              if (loc) setSelectedLocation(loc);
+            }}
+            style={{
+              width: '100%',
+              padding: '10px 12px',
+              borderRadius: '10px',
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              color: 'white',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              outline: 'none',
+              cursor: 'pointer'
+            }}
+          >
+            {locations.map(loc => (
+              <option key={loc.name} value={loc.name} style={{ background: '#1A1A32', color: 'white' }}>
+                {loc.title}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {tabs.map(tab => (
