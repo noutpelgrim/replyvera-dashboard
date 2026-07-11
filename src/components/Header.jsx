@@ -1,9 +1,13 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { LogOut } from 'lucide-react';
 
 const Header = ({ autoReply, setAutoReply }) => {
   const { signOut, user } = useAuth();
+  const { t } = useLanguage();
+
+  const userName = user?.email?.split('@')[0] || 'Vera';
 
   return (
     <div style={{
@@ -15,9 +19,9 @@ const Header = ({ autoReply, setAutoReply }) => {
     }}>
       <div>
         <h1 style={{ fontSize: '2rem', fontWeight: '800', letterSpacing: '-1px' }}>
-          Welcome back, {user?.email?.split('@')[0] || 'Vera'}
+          {t('welcome_back')}, {userName}
         </h1>
-        <p style={{ color: 'hsl(var(--text-muted))' }}>Manage your review automation and AI responses.</p>
+        <p style={{ color: 'hsl(var(--text-muted))' }}>{t('manage_auto')}</p>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -28,7 +32,7 @@ const Header = ({ autoReply, setAutoReply }) => {
           gap: '16px'
         }}>
           <span style={{ fontSize: '0.9rem', fontWeight: '600' }}>
-            Auto-Reply {autoReply ? 'Active' : 'Paused'}
+            {autoReply ? t('auto_reply_active') : 'Auto-Reply Paused'}
           </span>
           <button
             onClick={() => setAutoReply(!autoReply)}

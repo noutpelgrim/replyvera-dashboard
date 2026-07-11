@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useLanguage } from '../context/LanguageContext';
 
 const ReviewCard = ({ review, onApprove, onRegenerate }) => {
+  const { t } = useLanguage();
   const [draft, setDraft] = React.useState(review.drafted_reply);
   const [isEditing, setIsEditing] = useState(false);
   
@@ -56,7 +58,7 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
                 fontWeight: '800',
                 border: `1px solid ${isOfficial ? 'rgba(66, 133, 244, 0.2)' : 'rgba(108, 71, 255, 0.2)'}`
               }}>
-                {isOfficial ? 'OFFICIAL REVIEW' : 'SCANNED LEAD'}
+                {isOfficial ? t('official_review') : t('scanned_lead')}
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
@@ -66,7 +68,7 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
                 ))}
               </div>
               <span style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))', fontWeight: '500' }}>
-                • {review.review_date ? new Date(review.review_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Recently'}
+                • {review.review_date ? new Date(review.review_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : t('recently')}
               </span>
             </div>
           </div>
@@ -92,12 +94,12 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
         borderRadius: '12px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--primary))' }}>✨ AI Suggested Reply</span>
+          <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--primary))' }}>✨ {t('ai_suggested_reply')}</span>
           <button
             onClick={() => setIsEditing(!isEditing)}
             style={{ background: 'transparent', color: 'hsl(var(--text-muted))', fontSize: '0.8rem' }}
           >
-            {isEditing ? 'Save' : 'Edit Draft'}
+            {isEditing ? t('save') : t('edit_draft')}
           </button>
         </div>
 
@@ -114,7 +116,7 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
 
       {review.status === 'PUBLISHED' ? (
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'flex-end', color: '#00C9A7', fontWeight: '700', fontSize: '0.9rem' }}>
-          <span>✓ Replied on Google Maps</span>
+          <span>✓ {t('replied_on_google')}</span>
         </div>
       ) : (
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
@@ -129,7 +131,7 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
               fontSize: '0.9rem'
             }}
           >
-            🔄 Regenerate
+            🔄 {t('regenerate')}
           </button>
           <button
             onClick={() => onApprove(review.id, draft)}
@@ -142,7 +144,7 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
               fontSize: '0.9rem'
             }}
           >
-            ✅ Approve & Post
+            ✅ {t('approve_post')}
           </button>
         </div>
       )}

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import CONFIG from '../config';
 
 const SettingsPanel = ({ settings, setSettings, onSave }) => {
   const { user } = useAuth();
+  const { t } = useLanguage();
   const [isConnected, setIsConnected] = useState(false);
   const [checking, setChecking] = useState(true);
   const [accounts, setAccounts] = useState([]);
@@ -60,7 +62,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       
       if (accData.error) {
         if (accRes.status === 429) {
-          setError('Google rate limit reached. Please wait 10-15 minutes.');
+          setError(t('google_rate_limit'));
         } else {
           setError(accData.error);
         }
@@ -114,7 +116,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
   };
 
   const handleDisconnect = async () => {
-    if (!window.confirm('Are you sure you want to disconnect your Google account?')) return;
+    if (!window.confirm(t('confirm_disconnect'))) return;
     try {
       const response = await fetch(`${CONFIG.API_BASE}/auth/disconnect/${user.email}`, {
         method: 'DELETE'
@@ -149,14 +151,14 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       const data = await response.json();
       
       if (data.success) {
-        setSyncResult(`Successfully synced ${data.count} reviews! Refreshing...`);
+        setSyncResult(t('sync_success', { count: data.count }));
         // Trigger a refresh of the dashboard reviews
         setTimeout(() => window.location.reload(), 2000);
       } else {
-        setSyncResult(`Sync failed: ${data.error || 'Unknown error'}`);
+        setSyncResult(`${t('sync_failed')}: ${data.error || 'Unknown error'}`);
       }
     } catch (err) {
-      setSyncResult('Failed to reach the server. Check your connection.');
+      setSyncResult(t('server_unreachable'));
     } finally {
       setSyncing(false);
     }
@@ -173,13 +175,13 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       {/* Automation Settings */}
       <div className="glass" style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '32px', height: 'fit-content' }}>
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '8px' }}>Automation Settings</h2>
-          <p style={{ color: 'hsl(var(--text-muted))' }}>Customize how Vera interacts with your customers.</p>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '8px' }}>{t('automation_settings')}</h2>
+          <p style={{ color: 'hsl(var(--text-muted))' }}>{t('customize_vera')}</p>
         </div>
 
         <div style={{ display: 'grid', gap: '24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>Brand Tone</label>
+            <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>{t('brand_tone')}</label>
             <div style={{ display: 'flex', gap: '8px', background: 'hsl(var(--bg-dark))', padding: '4px', borderRadius: '12px', border: '1px solid hsl(var(--border))' }}>
               {tones.map(tone => (
                 <button
@@ -202,7 +204,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>Reply Language</label>
+            <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>{t('reply_language')}</label>
             <select
               value={settings.language || 'auto'}
               onChange={(e) => setSettings({ ...settings, language: e.target.value })}
@@ -219,20 +221,20 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                 cursor: 'pointer'
               }}
             >
-              <option value="auto" style={{ background: '#1A1A32', color: 'white' }}>Auto-Detect (Reply in customer's language)</option>
-              <option value="en" style={{ background: '#1A1A32', color: 'white' }}>Always English</option>
-              <option value="nl" style={{ background: '#1A1A32', color: 'white' }}>Always Dutch (Nederlands)</option>
-              <option value="es" style={{ background: '#1A1A32', color: 'white' }}>Always Spanish (Español)</option>
-              <option value="de" style={{ background: '#1A1A32', color: 'white' }}>Always German (Deutsch)</option>
-              <option value="fr" style={{ background: '#1A1A32', color: 'white' }}>Always French (Français)</option>
-              <option value="it" style={{ background: '#1A1A32', color: 'white' }}>Always Italian (Italiano)</option>
-              <option value="pt" style={{ background: '#1A1A32', color: 'white' }}>Always Portuguese (Português)</option>
-              <option value="zh" style={{ background: '#1A1A32', color: 'white' }}>Always Mandarin Chinese (中文)</option>
+              <option value="auto" style={{ background: '#1A1A32', color: 'white' }}>{t('lang_auto')}</option>
+              <option value="en" style={{ background: '#1A1A32', color: 'white' }}>{t('lang_en')}</option>
+              <option value="nl" style={{ background: '#1A1A32', color: 'white' }}>{t('lang_nl')}</option>
+              <option value="es" style={{ background: '#1A1A32', color: 'white' }}>{t('lang_es')}</option>
+              <option value="de" style={{ background: '#1A1A32', color: 'white' }}>{t('lang_de')}</option>
+              <option value="fr" style={{ background: '#1A1A32', color: 'white' }}>{t('lang_fr')}</option>
+              <option value="it" style={{ background: '#1A1A32', color: 'white' }}>{t('lang_it')}</option>
+              <option value="pt" style={{ background: '#1A1A32', color: 'white' }}>{t('lang_pt')}</option>
+              <option value="zh" style={{ background: '#1A1A32', color: 'white' }}>{t('lang_zh')}</option>
             </select>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>Minimum Rating to Auto-Reply</label>
+            <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>{t('min_rating')}</label>
             <input
               type="number"
               min="1"
@@ -244,9 +246,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>Custom Instructions</label>
+            <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>{t('custom_instructions')}</label>
             <textarea
-              placeholder="e.g. Never mention discounts, always invite them back for Friday live music..."
+              placeholder={t('instructions_placeholder')}
               value={settings.instructions}
               onChange={(e) => setSettings({ ...settings, instructions: e.target.value })}
               style={{ width: '100%', minHeight: '120px', padding: '12px', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
@@ -279,16 +281,16 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           }}>
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'white', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span>✨</span> Live AI Reply Preview
+                <span>✨</span> {t('live_preview_title')}
               </h3>
               <p style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))', marginTop: '4px' }}>
-                Test how Vera replies using your current tone and instructions.
+                {t('live_preview_desc')}
               </p>
             </div>
 
             <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: '1 1 200px' }}>
-                <label style={{ fontSize: '0.8rem', fontWeight: '600' }}>Sample Review</label>
+                <label style={{ fontSize: '0.8rem', fontWeight: '600' }}>{t('sample_review_label')}</label>
                 <textarea
                   value={previewReview}
                   onChange={(e) => setPreviewReview(e.target.value)}
@@ -298,7 +300,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               </div>
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '130px' }}>
-                <label style={{ fontSize: '0.8rem', fontWeight: '600' }}>Star Rating</label>
+                <label style={{ fontSize: '0.8rem', fontWeight: '600' }}>{t('star_rating_label')}</label>
                 <select
                   value={previewRating}
                   onChange={(e) => setPreviewRating(parseInt(e.target.value))}
@@ -339,7 +341,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                 cursor: 'pointer'
               }}
             >
-              {loadingPreview ? 'Generating draft...' : 'Test AI Response'}
+              {loadingPreview ? t('generating_draft') : t('test_ai_btn')}
             </button>
 
             {previewResult && (
@@ -353,7 +355,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                 color: '#E0E0FF'
               }}>
                 <div style={{ fontSize: '0.7rem', fontWeight: '700', color: 'hsl(var(--primary))', marginBottom: '6px', textTransform: 'uppercase' }}>
-                  Vera's Draft Response
+                  {t('vera_draft_resp')}
                 </div>
                 "{previewResult}"
               </div>
@@ -365,8 +367,8 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       {/* Connected Services */}
       <div className="glass" style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '32px', height: 'fit-content' }}>
         <div>
-          <h2 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '8px' }}>Connected Services</h2>
-          <p style={{ color: 'hsl(var(--text-muted))' }}>Link your business profiles to enable live review management.</p>
+          <h2 style={{ fontSize: '1.5rem', fontWeight: '800', marginBottom: '8px' }}>{t('connected_services')}</h2>
+          <p style={{ color: 'hsl(var(--text-muted))' }}>{t('link_profiles')}</p>
         </div>
 
         <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
@@ -428,7 +430,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   opacity: (syncing || locations.length === 0) ? 0.5 : 1
                 }}
               >
-                {syncing ? 'Syncing Reviews...' : 'Sync Reviews Now'}
+                {syncing ? 'Syncing Reviews...' : t('sync_now_btn')}
               </button>
 
               {syncResult && (
@@ -453,7 +455,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   transition: 'all 0.2s ease'
                 }}
               >
-                Disconnect Account
+                {t('disconnect_acct')}
               </button>
             </div>
           ) : (
@@ -475,7 +477,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   cursor: 'pointer'
                 }}
               >
-                Connect with Google
+                {t('connect_google')}
               </button>
               
               <div style={{
@@ -488,9 +490,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                 lineHeight: '1.4'
               }}>
                 <div style={{ fontWeight: '700', color: 'white', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span>🔒</span> Waarom vraagt Google om beheer- en verwijderrechten?
+                  <span>🔒</span> {t('google_scopes_info')}
                 </div>
-                Google bundelt alle review- en profielrechten in één standaardpakket genaamd <i>'Business Profile Management'</i>. ReplyVera gebruikt dit <b>uitsluitend</b> om je reviews in te laden en antwoorden te kunnen plaatsen. Wij zullen nooit wijzigingen aanbrengen in je bedrijfsinformatie of je listings verwijderen.
+                {t('google_scopes_desc')}
               </div>
             </div>
           )}

@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import CONFIG from '../config';
+import { useLanguage } from '../context/LanguageContext';
 
 const LeadsTab = () => {
+  const { t } = useLanguage();
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState(null);
@@ -36,11 +38,11 @@ const LeadsTab = () => {
     <div className="fade-in" style={{ color: 'white' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <div>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>Prospect Manager</h2>
-          <p style={{ color: 'hsl(var(--text-muted))' }}>Contact high-value local businesses discovered by the scanner.</p>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>{t('prospect_manager')}</h2>
+          <p style={{ color: 'hsl(var(--text-muted))' }}>{t('contact_businesses')}</p>
         </div>
         <div className="glass" style={{ padding: '8px 16px', borderRadius: '12px', fontSize: '0.9rem' }}>
-          Total Prospects: {leads.length}
+          {t('total_prospects')}: {leads.length}
         </div>
       </div>
 
@@ -72,7 +74,7 @@ const LeadsTab = () => {
           ))}
           {leads.length === 0 && (
             <div className="glass" style={{ padding: '40px', textAlign: 'center', color: 'hsl(var(--text-muted))' }}>
-              No leads found. Run the scanner to discover new prospects.
+              {t('no_leads_found')}
             </div>
           )}
         </div>
@@ -81,9 +83,9 @@ const LeadsTab = () => {
         <div>
           {selectedLead ? (
             <div className="glass fade-in" style={{ padding: '30px', position: 'sticky', top: '20px' }}>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', marginBottom: '6px' }}>Outreach Strategy</h3>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', marginBottom: '6px' }}>{t('outreach_strategy')}</h3>
               <p style={{ fontSize: '0.9rem', color: 'hsl(var(--text-muted))', marginBottom: '20px' }}>
-                Custom email drafted by AI for {selectedLead.business_name}.
+                {t('ai_email_desc', { name: selectedLead.business_name })}
               </p>
               
               <div style={{ 
@@ -104,12 +106,12 @@ const LeadsTab = () => {
                 className="btn-primary"
                 style={{ width: '100%', marginTop: '24px', padding: '14px' }}
               >
-                🚀 Send Outreach Email
+                🚀 {t('send_outreach')}
               </button>
             </div>
           ) : (
             <div className="glass" style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'hsl(var(--text-muted))' }}>
-              Select a prospect to view the outreach draft.
+              {t('select_prospect_msg')}
             </div>
           )}
         </div>
