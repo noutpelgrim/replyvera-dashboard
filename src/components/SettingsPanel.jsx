@@ -13,6 +13,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
   const [error, setError] = useState(null);
   
   const [previewReview, setPreviewReview] = useState('Super nice stay! Friendly staff and great atmosphere.');
+  const [previewRating, setPreviewRating] = useState(5);
   const [previewResult, setPreviewResult] = useState('');
   const [loadingPreview, setLoadingPreview] = useState(false);
   
@@ -26,7 +27,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           comment: previewReview,
-          rating: 5,
+          rating: previewRating,
           tone: settings.tone,
           instructions: settings.instructions,
           businessName: businessName
@@ -255,14 +256,42 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               </p>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '0.8rem', fontWeight: '600' }}>Sample Review</label>
-              <textarea
-                value={previewReview}
-                onChange={(e) => setPreviewReview(e.target.value)}
-                placeholder="Type a sample customer review here..."
-                style={{ width: '100%', minHeight: '60px', padding: '10px', fontSize: '0.85rem', borderRadius: '8px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', color: 'white' }}
-              />
+            <div style={{ display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: '1 1 200px' }}>
+                <label style={{ fontSize: '0.8rem', fontWeight: '600' }}>Sample Review</label>
+                <textarea
+                  value={previewReview}
+                  onChange={(e) => setPreviewReview(e.target.value)}
+                  placeholder="Type a sample customer review here..."
+                  style={{ width: '100%', minHeight: '60px', padding: '10px', fontSize: '0.85rem', borderRadius: '8px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', color: 'white' }}
+                />
+              </div>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', minWidth: '130px' }}>
+                <label style={{ fontSize: '0.8rem', fontWeight: '600' }}>Star Rating</label>
+                <select
+                  value={previewRating}
+                  onChange={(e) => setPreviewRating(parseInt(e.target.value))}
+                  style={{
+                    padding: '10px 12px',
+                    borderRadius: '8px',
+                    background: 'rgba(0, 0, 0, 0.2)',
+                    border: '1px solid rgba(255,255,255,0.06)',
+                    color: 'white',
+                    fontSize: '0.85rem',
+                    fontWeight: '600',
+                    outline: 'none',
+                    cursor: 'pointer',
+                    height: '42px'
+                  }}
+                >
+                  <option value="5" style={{ background: '#1A1A32', color: 'white' }}>⭐⭐⭐⭐⭐ (5)</option>
+                  <option value="4" style={{ background: '#1A1A32', color: 'white' }}>⭐⭐⭐⭐ (4)</option>
+                  <option value="3" style={{ background: '#1A1A32', color: 'white' }}>⭐⭐⭐ (3)</option>
+                  <option value="2" style={{ background: '#1A1A32', color: 'white' }}>⭐⭐ (2)</option>
+                  <option value="1" style={{ background: '#1A1A32', color: 'white' }}>⭐ (1)</option>
+                </select>
+              </div>
             </div>
 
             <button
