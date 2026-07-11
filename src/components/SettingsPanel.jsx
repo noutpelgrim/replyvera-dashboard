@@ -227,6 +227,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               <option value="fr" style={{ background: '#1A1A32', color: 'white' }}>Always French (Français)</option>
               <option value="it" style={{ background: '#1A1A32', color: 'white' }}>Always Italian (Italiano)</option>
               <option value="pt" style={{ background: '#1A1A32', color: 'white' }}>Always Portuguese (Português)</option>
+              <option value="zh" style={{ background: '#1A1A32', color: 'white' }}>Always Mandarin Chinese (中文)</option>
             </select>
           </div>
 
