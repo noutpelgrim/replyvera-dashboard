@@ -157,9 +157,7 @@ export default function Dashboard() {
       
       <main style={{ marginLeft: '280px', flex: 1, padding: '40px', maxWidth: '1000px' }}>
         <Header autoReply={autoReply} setAutoReply={setAutoReply} />
-        <div style={{ padding: '10px', background: '#ff4d4d', color: 'white', borderRadius: '8px', marginBottom: '20px', textAlign: 'center', fontWeight: 'bold' }}>
-          🚨 CONNECTION VERIFIED: VERSION 4.0 ACTIVE 🚨
-        </div>
+
 
         {activeTab === 'reviews' && (
           <div className="fade-in" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
