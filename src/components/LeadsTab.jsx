@@ -6,6 +6,7 @@ const LeadsTab = () => {
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState(null);
   const [sending, setSending] = useState(false);
+  const [editedDraft, setEditedDraft] = useState('');
 
   useEffect(() => {
     fetch(`${CONFIG.API_BASE}/api/leads`)
@@ -22,7 +23,9 @@ const LeadsTab = () => {
     setSending(true);
     try {
       const res = await fetch(`${CONFIG.API_BASE}/api/leads/${lead.id}/send`, {
-        method: 'POST'
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ draft: editedDraft })
       });
       const data = await res.json();
       if (res.ok) {
@@ -60,7 +63,10 @@ const LeadsTab = () => {
           {leads.map(lead => (
             <div 
               key={lead.id}
-              onClick={() => setSelectedLead(lead)}
+              onClick={() => {
+                setSelectedLead(lead);
+                setEditedDraft(lead.outreach_draft || '');
+              }}
               className={`glass-card ${selectedLead?.id === lead.id ? 'active-card' : ''}`}
               style={{
                 padding: '20px',
@@ -96,18 +102,24 @@ const LeadsTab = () => {
                 Custom email drafted by AI for {selectedLead.business_name}.
               </p>
               
-              <div style={{ 
-                background: 'rgba(0,0,0,0.3)', 
-                padding: '24px', 
-                borderRadius: '12px', 
-                fontSize: '0.95rem',
-                lineHeight: '1.6',
-                minHeight: '200px',
-                whiteSpace: 'pre-wrap',
-                border: '1px solid hsl(var(--border))'
-              }}>
-                {selectedLead.outreach_draft}
-              </div>
+              <textarea
+                value={editedDraft}
+                onChange={(e) => setEditedDraft(e.target.value)}
+                style={{ 
+                  width: '100%',
+                  background: 'rgba(0,0,0,0.3)', 
+                  padding: '24px', 
+                  borderRadius: '12px', 
+                  fontSize: '0.95rem',
+                  lineHeight: '1.6',
+                  minHeight: '300px',
+                  color: 'white',
+                  border: '1px solid hsl(var(--border))',
+                  outline: 'none',
+                  fontFamily: 'inherit',
+                  resize: 'vertical'
+                }}
+              />
 
               <button 
                 onClick={() => handleSendEmail(selectedLead)}
