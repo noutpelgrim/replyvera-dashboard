@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import CONFIG from '../config';
-import { useLanguage } from '../context/LanguageContext';
 
 const LeadsTab = () => {
-  const { t } = useLanguage();
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedLead, setSelectedLead] = useState(null);
+  const [sending, setSending] = useState(false);
 
   useEffect(() => {
     fetch(`${CONFIG.API_BASE}/api/leads`)
@@ -18,18 +17,27 @@ const LeadsTab = () => {
       .catch(err => console.error('Failed to fetch leads:', err));
   }, []);
 
-  const handleSendEmail = (lead) => {
-    const subject = encodeURIComponent("Helping with your Google Reviews");
-    const body = encodeURIComponent(lead.outreach_draft);
-    window.location.href = `mailto:${lead.email}?subject=${subject}&body=${body}`;
-    
-    // Update status locally
-    fetch(`${CONFIG.API_BASE}/api/leads/${lead.id}`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: 'SENT' })
-    });
-    setLeads(leads.map(l => l.id === lead.id ? { ...l, status: 'SENT' } : l));
+  const handleSendEmail = async (lead) => {
+    if (sending) return;
+    setSending(true);
+    try {
+      const res = await fetch(`${CONFIG.API_BASE}/api/leads/${lead.id}/send`, {
+        method: 'POST'
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setLeads(leads.map(l => l.id === lead.id ? { ...l, status: 'SENT' } : l));
+        setSelectedLead({ ...lead, status: 'SENT' });
+        alert(data.simulated ? '🚀 Email dispatch simulated successfully!' : '🚀 Outreach email sent successfully!');
+      } else {
+        alert(`Failed to send: ${data.error || 'Unknown error'}`);
+      }
+    } catch (err) {
+      console.error('Failed to send outreach email:', err);
+      alert('Failed to connect to backend server.');
+    } finally {
+      setSending(false);
+    }
   };
 
   if (loading) return <div style={{ color: 'white', padding: '20px' }}>Loading prospect database...</div>;
@@ -38,11 +46,11 @@ const LeadsTab = () => {
     <div className="fade-in" style={{ color: 'white' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
         <div>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>{t('prospect_manager')}</h2>
-          <p style={{ color: 'hsl(var(--text-muted))' }}>{t('contact_businesses')}</p>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>Prospect Manager</h2>
+          <p style={{ color: 'hsl(var(--text-muted))' }}>Contact high-value local businesses discovered by the scanner.</p>
         </div>
         <div className="glass" style={{ padding: '8px 16px', borderRadius: '12px', fontSize: '0.9rem' }}>
-          {t('total_prospects')}: {leads.length}
+          Total Prospects: {leads.length}
         </div>
       </div>
 
@@ -74,7 +82,7 @@ const LeadsTab = () => {
           ))}
           {leads.length === 0 && (
             <div className="glass" style={{ padding: '40px', textAlign: 'center', color: 'hsl(var(--text-muted))' }}>
-              {t('no_leads_found')}
+              No leads found. Run the scanner to discover new prospects.
             </div>
           )}
         </div>
@@ -83,9 +91,9 @@ const LeadsTab = () => {
         <div>
           {selectedLead ? (
             <div className="glass fade-in" style={{ padding: '30px', position: 'sticky', top: '20px' }}>
-              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', marginBottom: '6px' }}>{t('outreach_strategy')}</h3>
+              <h3 style={{ fontSize: '1.3rem', fontWeight: '800', marginBottom: '6px' }}>Outreach Strategy</h3>
               <p style={{ fontSize: '0.9rem', color: 'hsl(var(--text-muted))', marginBottom: '20px' }}>
-                {t('ai_email_desc', { name: selectedLead.business_name })}
+                Custom email drafted by AI for {selectedLead.business_name}.
               </p>
               
               <div style={{ 
@@ -104,14 +112,21 @@ const LeadsTab = () => {
               <button 
                 onClick={() => handleSendEmail(selectedLead)}
                 className="btn-primary"
-                style={{ width: '100%', marginTop: '24px', padding: '14px' }}
+                disabled={sending}
+                style={{ 
+                  width: '100%', 
+                  marginTop: '24px', 
+                  padding: '14px',
+                  opacity: sending ? 0.6 : 1,
+                  cursor: sending ? 'not-allowed' : 'pointer'
+                }}
               >
-                🚀 {t('send_outreach')}
+                {sending ? '⏳ Sending Outreach...' : '🚀 Send Outreach Email'}
               </button>
             </div>
           ) : (
             <div className="glass" style={{ height: '400px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'hsl(var(--text-muted))' }}>
-              {t('select_prospect_msg')}
+              Select a prospect to view the outreach draft.
             </div>
           )}
         </div>

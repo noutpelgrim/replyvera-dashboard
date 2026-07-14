@@ -7,14 +7,12 @@ import LeadsTab from '../components/LeadsTab';
 import AnalyticsTab from '../components/AnalyticsTab';
 
 import { useAuth } from '../context/AuthContext';
-import { useLanguage } from '../context/LanguageContext';
 import CONFIG from '../config';
 
 const API_BASE = `${CONFIG.API_BASE}/api`;
 
 export default function Dashboard() {
   const { user } = useAuth();
-  const { t } = useLanguage();
   const [activeTab, setActiveTab] = useState('reviews');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
   const [reviews, setReviews] = useState([]);
@@ -181,7 +179,7 @@ export default function Dashboard() {
                 <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'hsl(var(--text-muted))', fontSize: '0.9rem' }}>🔍</span>
                 <input
                   type="text"
-                  placeholder={t('search_placeholder')}
+                  placeholder="Search reviews or reviewer..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   style={{
@@ -201,7 +199,7 @@ export default function Dashboard() {
               <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', alignItems: 'center' }}>
                 {/* Rating Filter */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('rating_label')}</label>
+                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Rating:</label>
                   <select
                     value={ratingFilter}
                     onChange={(e) => setRatingFilter(e.target.value)}
@@ -217,7 +215,7 @@ export default function Dashboard() {
                       cursor: 'pointer'
                     }}
                   >
-                    <option value="all">{t('all_stars')}</option>
+                    <option value="all">All Stars</option>
                     <option value="5">5 Stars</option>
                     <option value="4">4 Stars</option>
                     <option value="3">3 Stars</option>
@@ -228,7 +226,7 @@ export default function Dashboard() {
 
                 {/* Status Filter */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t('status_label')}</label>
+                  <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status:</label>
                   <div style={{ display: 'flex', background: 'rgba(0,0,0,0.2)', padding: '2px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
                     {['all', 'PENDING', 'PUBLISHED'].map(status => (
                       <button
@@ -247,7 +245,7 @@ export default function Dashboard() {
                           outline: 'none'
                         }}
                       >
-                        {status === 'all' ? t('all') : status}
+                        {status === 'all' ? 'All' : status}
                       </button>
                     ))}
                   </div>
@@ -267,7 +265,7 @@ export default function Dashboard() {
               ))
             ) : (
               <div className="glass" style={{ padding: '40px', textAlign: 'center' }}>
-                <p style={{ color: 'hsl(var(--text-muted))' }}>{t('no_reviews_match')}</p>
+                <p style={{ color: 'hsl(var(--text-muted))' }}>No reviews match your filters.</p>
               </div>
             )}
           </div>

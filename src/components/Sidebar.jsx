@@ -1,17 +1,15 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
-import { useLanguage } from '../context/LanguageContext';
 
 const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSelectedLocation }) => {
   const { user } = useAuth();
-  const { language, setLanguage, t } = useLanguage();
   const isAdmin = user?.email === 'noutpelgrim@hotmail.com';
 
   const tabs = [
-    { id: 'reviews', label: t('reviews'), icon: '💬' },
-    ...(isAdmin ? [{ id: 'leads', label: t('prospects'), icon: '🚀' }] : []),
-    { id: 'settings', label: t('automation'), icon: '⚙️' },
-    { id: 'analytics', label: t('analytics'), icon: '📊' }
+    { id: 'reviews', label: 'Reviews', icon: '💬' },
+    ...(isAdmin ? [{ id: 'leads', label: 'Prospects', icon: '🚀' }] : []),
+    { id: 'settings', label: 'Automation', icon: '⚙️' },
+    { id: 'analytics', label: 'Analytics', icon: '📊' }
   ];
 
   return (
@@ -53,7 +51,7 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
       {locations && locations.length > 0 && (
         <div style={{ marginBottom: '24px' }}>
           <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', display: 'block', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-            📍 {t('active_location')}
+            📍 Active Location
           </label>
           <select
             value={selectedLocation ? selectedLocation.name : ''}
@@ -108,36 +106,9 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
         ))}
       </nav>
 
-      {/* UI Language Switcher */}
-      <div style={{ marginTop: 'auto', marginBottom: '16px' }}>
-        <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', display: 'block', marginBottom: '8px', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-          🌐 {t('ui_language')}
-        </label>
-        <select
-          value={language}
-          onChange={(e) => setLanguage(e.target.value)}
-          style={{
-            width: '100%',
-            padding: '8px 10px',
-            borderRadius: '8px',
-            background: 'rgba(255,255,255,0.05)',
-            border: '1px solid rgba(255,255,255,0.1)',
-            color: 'white',
-            fontSize: '0.8rem',
-            fontWeight: '600',
-            outline: 'none',
-            cursor: 'pointer'
-          }}
-        >
-          <option value="en" style={{ background: '#1A1A32', color: 'white' }}>English 🇬🇧</option>
-          <option value="nl" style={{ background: '#1A1A32', color: 'white' }}>Nederlands 🇳🇱</option>
-          <option value="es" style={{ background: '#1A1A32', color: 'white' }}>Español 🇪🇸</option>
-        </select>
-      </div>
-
-      <div>
+      <div style={{ marginTop: 'auto' }}>
         <div className="glass" style={{ padding: '16px', fontSize: '0.8rem', color: 'hsl(var(--text-muted))', overflow: 'hidden' }}>
-          <p>{t('logged_in_as')}</p>
+          <p>Logged in as</p>
           <p style={{ 
             color: 'white', 
             fontWeight: '600', 

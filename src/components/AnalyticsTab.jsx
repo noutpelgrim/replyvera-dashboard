@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import CONFIG from '../config';
 import { useAuth } from '../context/AuthContext';
-import { useLanguage } from '../context/LanguageContext';
 
 const AnalyticsTab = () => {
-  const { t } = useLanguage();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -45,31 +43,31 @@ const AnalyticsTab = () => {
   return (
     <div className="fade-in" style={{ color: 'white' }}>
       <div style={{ marginBottom: '30px' }}>
-        <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>{t('business_intelligence')}</h2>
-        <p style={{ color: 'hsl(var(--text-muted))' }}>{t('visualize_rep')}</p>
+        <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>Business Intelligence</h2>
+        <p style={{ color: 'hsl(var(--text-muted))' }}>Visualize your reputation performance and ROI.</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '24px', marginBottom: '40px' }}>
         <MetricCard 
-          title={t('avg_rating')} 
+          title="Average Rating" 
           value={`${stats.averageRating} / 5.0`} 
           subtext="+0.2 this month" 
           icon="⭐" 
         />
         <MetricCard 
-          title={t('reply_efficiency')} 
+          title="Reply Efficiency" 
           value={`${stats.replyRate}%`} 
           subtext="Goal: 100%" 
           icon="⚡" 
         />
         <MetricCard 
-          title={t('time_saved')} 
+          title="Time Saved" 
           value={`${stats.timeSavedHours}h`} 
           subtext="By AI Automation" 
           icon="⏳" 
         />
         <MetricCard 
-          title={t('lead_conversion')} 
+          title="Lead Conversion" 
           value={`${stats.leadStats.leadsContacted}`} 
           subtext={`Out of ${stats.leadStats.totalLeads} prospects`} 
           icon="🏹" 
@@ -79,7 +77,7 @@ const AnalyticsTab = () => {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '40px' }}>
         {/* Rating Distribution Chart */}
         <div className="glass" style={{ padding: '30px', borderRadius: '20px' }}>
-          <h3 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '24px' }}>{t('rating_dist')}</h3>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '24px' }}>Rating Distribution</h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {[5, 4, 3, 2, 1].map(star => (
               <div key={star} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
@@ -116,12 +114,15 @@ const AnalyticsTab = () => {
           flexDirection: 'column',
           justifyContent: 'center'
         }}>
-          <h3 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '12px' }}>{t('operational_impact')}</h3>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: '800', marginBottom: '12px' }}>Operational Impact</h3>
           <p style={{ lineHeight: '1.6', color: 'hsl(var(--text-muted))' }}>
-            {t('operational_desc', { count: stats.totalReviews, hours: stats.timeSavedHours })}
+            By automating replies for <strong>{stats.totalReviews} reviews</strong>, ReplyVera has effectively increased your business capacity by 
+            <strong> {stats.timeSavedHours} hours</strong>. 
+            <br /><br />
+            Responding to guests within 24 hours is shown to increase repeat bookings by up to <strong>15%</strong>.
           </p>
           <div style={{ marginTop: '20px', paddingTop: '20px', borderTop: '1px solid hsl(var(--border))' }}>
-            <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'hsl(var(--primary))' }}>{t('system_health')}</span>
+            <span style={{ fontSize: '0.8rem', fontWeight: '700', color: 'hsl(var(--primary))' }}>SYSTEM HEALTH: OPTIMAL</span>
           </div>
         </div>
       </div>
