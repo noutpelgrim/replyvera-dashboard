@@ -30,7 +30,11 @@ export default function Login() {
       if (resetError) throw resetError;
       alert('Password reset link sent! Check your inbox.');
     } catch (err) {
-      setError(err.message);
+      if (err.message && err.message.includes('sending recovery email')) {
+        setError('Error sending recovery email. (Tip: Ensure you have configured SMTP credentials in your Supabase Dashboard -> Project Settings -> Authentication -> SMTP).');
+      } else {
+        setError(err.message || 'Failed to send recovery email.');
+      }
     } finally {
       setIsLoading(false);
     }
