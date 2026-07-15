@@ -6,7 +6,10 @@ import { supabase } from '../lib/supabaseClient';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('signup') !== 'true';
+  });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
