@@ -9,6 +9,14 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
   const [trustpilotRequested, setTrustpilotRequested] = useState(false);
   const [tier, setTier] = useState('starter');
   const [checking, setChecking] = useState(true);
+  const [notification, setNotification] = useState(null);
+  
+  const triggerNotification = (message) => {
+    setNotification(message);
+    setTimeout(() => {
+      setNotification(null);
+    }, 4500);
+  };
   const [accounts, setAccounts] = useState([]);
   const [locations, setLocations] = useState([]);
   const [syncing, setSyncing] = useState(false);
@@ -147,7 +155,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       if (data.success) {
         if (platform === 'facebook') setFacebookRequested(true);
         if (platform === 'trustpilot') setTrustpilotRequested(true);
-        alert(`Thanks! Your interest in the ${platform === 'facebook' ? 'Facebook' : 'Trustpilot'} integration has been registered. We'll notify you as soon as it is live!`);
+        triggerNotification(`We'll notify you as soon as the ${platform === 'facebook' ? 'Facebook' : 'Trustpilot'} integration goes live!`);
       }
     } catch (err) {
       console.error('Failed to request platform:', err);
@@ -612,6 +620,61 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           </button>
         </div>
       </div>
+      {/* Custom Glassmorphic Toast Notification */}
+      {notification && (
+        <div style={{
+          position: 'fixed',
+          top: '24px',
+          right: '24px',
+          zIndex: 99999,
+          background: 'rgba(30, 30, 46, 0.75)',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          borderRadius: '16px',
+          padding: '16px 24px',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '16px',
+          color: 'white',
+          animation: 'slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+          maxWidth: '380px'
+        }}>
+          <div style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            background: 'rgba(0, 201, 167, 0.15)',
+            border: '1px solid rgba(0, 201, 167, 0.3)',
+            color: '#00C9A7',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1rem',
+            flexShrink: 0
+          }}>
+            ✓
+          </div>
+          <div>
+            <div style={{ fontWeight: '700', fontSize: '0.9rem', color: 'white' }}>Request Registered</div>
+            <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', marginTop: '2px', lineHeight: '1.4' }}>{notification}</div>
+          </div>
+        </div>
+      )}
+
+      <style>{`
+        @keyframes slideIn {
+          from {
+            transform: translateY(-20px);
+            opacity: 0;
+          }
+          to {
+            transform: translateY(0);
+            opacity: 1;
+          }
+        }
+      `}</style>
     </div>
   );
 };
