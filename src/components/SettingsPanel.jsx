@@ -200,7 +200,8 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
       gap: '32px',
       maxWidth: '1200px',
-      margin: '0 auto'
+      margin: '0 auto',
+      position: 'relative'
     }}>
       {/* Automation Settings */}
       <div className="glass" style={{ padding: '32px', display: 'flex', flexDirection: 'column', gap: '32px', height: 'fit-content' }}>
@@ -623,9 +624,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       {/* Custom Glassmorphic Toast Notification */}
       {notification && (
         <div style={{
-          position: 'fixed',
-          top: '24px',
-          right: '24px',
+          position: 'absolute',
+          top: '0px',
+          right: '0px',
           zIndex: 99999,
           background: 'rgba(30, 30, 46, 0.75)',
           backdropFilter: 'blur(20px)',
