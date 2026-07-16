@@ -69,6 +69,33 @@ export default function Dashboard() {
     fetchData();
   }, [user?.email, refreshTrigger]);
 
+  // 1.5 Sync URL tier parameter to backend on mount (especially useful for Google login redirects)
+  useEffect(() => {
+    const syncUrlTier = async () => {
+      if (!user?.email) return;
+      const params = new URLSearchParams(window.location.search);
+      const tierParam = params.get('tier');
+      if (tierParam) {
+        try {
+          console.log(`📡 Syncing tier from URL redirect: ${tierParam}...`);
+          await fetch(`${CONFIG.API_BASE}/auth/tier`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: user.email, tier: tierParam })
+          });
+          // Clean parameters from address bar history to keep URL neat
+          const cleanUrl = window.location.origin + window.location.pathname;
+          window.history.replaceState({}, document.title, cleanUrl);
+          // Trigger settings state refresh
+          setRefreshTrigger(prev => prev + 1);
+        } catch (err) {
+          console.error('Failed to sync URL tier:', err);
+        }
+      }
+    };
+    syncUrlTier();
+  }, [user?.email]);
+
   // 2. Handle Review Approval
   const handleApprove = async (id, draft) => {
     try {

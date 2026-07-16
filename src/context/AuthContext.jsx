@@ -31,10 +31,10 @@ export const AuthProvider = ({ children }) => {
     user,
     loading,
     signIn: (email, password) => supabase.auth.signInWithPassword({ email, password }),
-    signInWithGoogle: () => supabase.auth.signInWithOAuth({
+    signInWithGoogle: (tier = 'starter') => supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin + '/dashboard',
+        redirectTo: `${window.location.origin}/dashboard?tier=${tier}`,
         queryParams: {
           access_type: 'offline',
           prompt: 'consent',
