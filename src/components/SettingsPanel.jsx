@@ -5,6 +5,7 @@ import CONFIG from '../config';
 const SettingsPanel = ({ settings, setSettings, onSave }) => {
   const { user } = useAuth();
   const [isConnected, setIsConnected] = useState(false);
+  const [tier, setTier] = useState('starter');
   const [checking, setChecking] = useState(true);
   const [accounts, setAccounts] = useState([]);
   const [locations, setLocations] = useState([]);
@@ -87,6 +88,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
         const response = await fetch(`${CONFIG.API_BASE}/auth/status/${user.email}`);
         const data = await response.json();
         setIsConnected(data.connected);
+        if (data && data.tier) setTier(data.tier);
         
         if (data.connected) {
           // Only fetch enrolled data from OUR database on mount (it's fast and has no quota)
@@ -494,6 +496,98 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Facebook Platform Gated Card */}
+        <div className="glass-card" style={{
+          padding: '24px',
+          borderRadius: '20px',
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.05)',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
+            <div style={{ width: '48px', height: '48px', background: '#1877F2', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '1.5rem' }}>👥</span>
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h3 style={{ fontWeight: '700' }}>Facebook Page</h3>
+                {tier === 'starter' && (
+                  <span style={{ fontSize: '0.65rem', background: 'rgba(99, 102, 241, 0.15)', border: '1px solid rgba(99, 102, 241, 0.3)', color: '#818CF8', padding: '2px 6px', borderRadius: '4px', fontWeight: '700', textTransform: 'uppercase' }}>
+                    🔒 Pro/Agency
+                  </span>
+                )}
+              </div>
+              <p style={{ fontSize: '0.85rem', color: 'hsl(var(--text-muted))' }}>
+                Not connected
+              </p>
+            </div>
+          </div>
+          <button 
+            disabled={tier === 'starter'}
+            onClick={() => alert('Facebook integration setup coming soon!')}
+            style={{ 
+              width: '100%', 
+              padding: '12px', 
+              borderRadius: '12px', 
+              background: tier === 'starter' ? 'rgba(255,255,255,0.03)' : '#1877F2', 
+              color: tier === 'starter' ? 'rgba(255,255,255,0.3)' : 'white',
+              border: tier === 'starter' ? '1px solid rgba(255,255,255,0.05)' : 'none',
+              fontWeight: '600',
+              cursor: tier === 'starter' ? 'not-allowed' : 'pointer',
+              outline: 'none'
+            }}
+          >
+            {tier === 'starter' ? 'Upgrade to unlock' : 'Connect Facebook Page'}
+          </button>
+        </div>
+
+        {/* Trustpilot Platform Gated Card */}
+        <div className="glass-card" style={{
+          padding: '24px',
+          borderRadius: '20px',
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.05)',
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
+            <div style={{ width: '48px', height: '48px', background: '#00B67A', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontSize: '1.4rem' }}>⭐</span>
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <h3 style={{ fontWeight: '700' }}>Trustpilot</h3>
+                {tier === 'starter' && (
+                  <span style={{ fontSize: '0.65rem', background: 'rgba(99, 102, 241, 0.15)', border: '1px solid rgba(99, 102, 241, 0.3)', color: '#818CF8', padding: '2px 6px', borderRadius: '4px', fontWeight: '700', textTransform: 'uppercase' }}>
+                    🔒 Pro/Agency
+                  </span>
+                )}
+              </div>
+              <p style={{ fontSize: '0.85rem', color: 'hsl(var(--text-muted))' }}>
+                Not connected
+              </p>
+            </div>
+          </div>
+          <button 
+            disabled={tier === 'starter'}
+            onClick={() => alert('Trustpilot integration setup coming soon!')}
+            style={{ 
+              width: '100%', 
+              padding: '12px', 
+              borderRadius: '12px', 
+              background: tier === 'starter' ? 'rgba(255,255,255,0.03)' : '#00B67A', 
+              color: tier === 'starter' ? 'rgba(255,255,255,0.3)' : 'white',
+              border: tier === 'starter' ? '1px solid rgba(255,255,255,0.05)' : 'none',
+              fontWeight: '600',
+              cursor: tier === 'starter' ? 'not-allowed' : 'pointer',
+              outline: 'none'
+            }}
+          >
+            {tier === 'starter' ? 'Upgrade to unlock' : 'Connect Trustpilot'}
+          </button>
         </div>
       </div>
     </div>

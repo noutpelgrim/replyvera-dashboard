@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
         }
       }
     }),
-    signUp: (email, password) => supabase.auth.signUp({ email, password }),
+    signUp: (email, password, options = {}) => supabase.auth.signUp({ email, password, ...options }),
     signOut: () => supabase.auth.signOut(),
   };
 

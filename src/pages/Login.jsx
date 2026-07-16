@@ -51,7 +51,14 @@ export default function Login() {
         if (authError) throw authError;
         navigate('/dashboard');
       } else {
-        const { error: registerError } = await signUp(email, password);
+        const queryParams = new URLSearchParams(window.location.search);
+        const selectedTier = queryParams.get('tier') || 'starter'; // Default to starter
+        
+        const { error: registerError } = await signUp(email, password, {
+          options: {
+            data: { subscription_tier: selectedTier }
+          }
+        });
         if (registerError) throw registerError;
         alert('Check your email for confirmation.');
         setIsLogin(true);

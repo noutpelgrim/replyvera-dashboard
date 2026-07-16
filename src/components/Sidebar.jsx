@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import CONFIG from '../config';
 
 const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSelectedLocation }) => {
   const { user } = useAuth();
+  const [tier, setTier] = useState('starter');
+  
+  useEffect(() => {
+    if (!user?.email) return;
+    // Query active user status (which returns their subscription_tier)
+    fetch(`${CONFIG.API_BASE}/auth/status/${user.email}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.tier) {
+          setTier(data.tier);
+        }
+      })
+      .catch(err => console.error('Failed to fetch user tier:', err));
+  }, [user?.email]);
+
   const isAdmin = user?.email === 'noutpelgrim@hotmail.com';
+  const isAgency = tier === 'agency';
 
   const tabs = [
     { id: 'reviews', label: 'Reviews', icon: '💬' },
-    ...(isAdmin ? [{ id: 'leads', label: 'Prospects', icon: '🚀' }] : []),
+    ...((isAdmin || isAgency) ? [{ id: 'leads', label: 'Prospects', icon: '🚀' }] : []),
     { id: 'settings', label: 'Automation', icon: '⚙️' },
     { id: 'analytics', label: 'Analytics', icon: '📊' }
   ];
@@ -107,6 +124,21 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
       </nav>
 
       <div style={{ marginTop: 'auto' }}>
+        <div style={{
+          margin: '0 0 12px 0',
+          padding: '10px 14px',
+          borderRadius: '12px',
+          background: tier === 'agency' ? 'rgba(16, 185, 129, 0.08)' : tier === 'professional' ? 'rgba(99, 102, 241, 0.08)' : 'rgba(255, 255, 255, 0.03)',
+          border: `1px solid ${tier === 'agency' ? 'rgba(16, 185, 129, 0.25)' : tier === 'professional' ? 'rgba(99, 102, 241, 0.25)' : 'rgba(255, 255, 255, 0.06)'}`,
+          color: tier === 'agency' ? '#10B981' : tier === 'professional' ? '#818CF8' : '#94A3B8',
+          fontSize: '0.78rem',
+          fontWeight: '700',
+          textAlign: 'center',
+          textTransform: 'uppercase',
+          letterSpacing: '0.06em'
+        }}>
+          💎 {tier} Plan
+        </div>
         <div className="glass" style={{ padding: '16px', fontSize: '0.8rem', color: 'hsl(var(--text-muted))', overflow: 'hidden' }}>
           <p>Logged in as</p>
           <p style={{ 
