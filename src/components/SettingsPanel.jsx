@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useAuth } from '../context/AuthContext';
 import CONFIG from '../config';
 
@@ -622,19 +623,19 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
         </div>
       </div>
       {/* Custom Glassmorphic Toast Notification */}
-      {notification && (
+      {notification && createPortal(
         <div style={{
-          position: 'absolute',
-          top: '0px',
-          right: '0px',
-          zIndex: 99999,
-          background: 'rgba(30, 30, 46, 0.75)',
+          position: 'fixed',
+          top: '24px',
+          right: '24px',
+          zIndex: 999999,
+          background: 'rgba(30, 30, 46, 0.85)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
           border: '1px solid rgba(255, 255, 255, 0.1)',
           borderRadius: '16px',
           padding: '16px 24px',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
           display: 'flex',
           alignItems: 'center',
           gap: '16px',
@@ -661,7 +662,8 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
             <div style={{ fontWeight: '700', fontSize: '0.9rem', color: 'white' }}>Request Registered</div>
             <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', marginTop: '2px', lineHeight: '1.4' }}>{notification}</div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       <style>{`
