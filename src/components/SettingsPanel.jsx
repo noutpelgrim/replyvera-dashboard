@@ -5,6 +5,8 @@ import CONFIG from '../config';
 const SettingsPanel = ({ settings, setSettings, onSave }) => {
   const { user } = useAuth();
   const [isConnected, setIsConnected] = useState(false);
+  const [facebookConnected, setFacebookConnected] = useState(false);
+  const [trustpilotConnected, setTrustpilotConnected] = useState(false);
   const [tier, setTier] = useState('starter');
   const [checking, setChecking] = useState(true);
   const [accounts, setAccounts] = useState([]);
@@ -87,16 +89,18 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       try {
         const response = await fetch(`${CONFIG.API_BASE}/auth/status/${user.email}`);
         const data = await response.json();
-        setIsConnected(data.connected);
+        setIsConnected(data.googleConnected);
+        setFacebookConnected(data.facebookConnected);
+        setTrustpilotConnected(data.trustpilotConnected);
         if (data && data.tier) setTier(data.tier);
         
-        if (data.connected) {
-          // Only fetch enrolled data from OUR database on mount (it's fast and has no quota)
+        if (data.googleConnected || data.facebookConnected || data.trustpilotConnected) {
+          // Fetch enrolled data from OUR database on mount (it's fast and has no quota)
           const enrolledRes = await fetch(`${CONFIG.API_BASE}/google/enrolled?email=${user.email}`);
           const enrolledData = await enrolledRes.json();
           if (enrolledData.length > 0) {
             setLocations(enrolledData);
-          } else {
+          } else if (data.googleConnected) {
             // Fetch from Google if nothing enrolled yet
             fetchGoogleData();
           }
@@ -129,6 +133,42 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
       }
     } catch (err) {
       console.error('Failed to disconnect Google account:', err);
+    }
+  };
+
+  const handleConnectPlatform = async (platform) => {
+    try {
+      const res = await fetch(`${CONFIG.API_BASE}/auth/connect/${platform}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: user.email })
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (platform === 'facebook') setFacebookConnected(true);
+        if (platform === 'trustpilot') setTrustpilotConnected(true);
+        alert(`Connected ${platform} successfully! Click 'Sync Reviews Now' to pull mock reviews.`);
+        window.location.reload(); // Refresh to pull mock locations in dropdown
+      }
+    } catch (err) {
+      console.error('Failed to connect platform:', err);
+    }
+  };
+
+  const handleDisconnectPlatform = async (platform) => {
+    if (!window.confirm(`Are you sure you want to disconnect ${platform}?`)) return;
+    try {
+      const res = await fetch(`${CONFIG.API_BASE}/auth/disconnect/${platform}/${user.email}`, {
+        method: 'DELETE'
+      });
+      const data = await res.json();
+      if (data.success) {
+        if (platform === 'facebook') setFacebookConnected(false);
+        if (platform === 'trustpilot') setTrustpilotConnected(false);
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error('Failed to disconnect platform:', err);
     }
   };
 
@@ -520,27 +560,27 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   </span>
                 )}
               </div>
-              <p style={{ fontSize: '0.85rem', color: 'hsl(var(--text-muted))' }}>
-                Not connected
+              <p style={{ fontSize: '0.85rem', color: facebookConnected ? '#00C9A7' : 'hsl(var(--text-muted))' }}>
+                {facebookConnected ? '● Connected' : 'Not connected'}
               </p>
             </div>
           </div>
           <button 
             disabled={tier === 'starter'}
-            onClick={() => alert('Facebook integration setup coming soon!')}
+            onClick={facebookConnected ? () => handleDisconnectPlatform('facebook') : () => handleConnectPlatform('facebook')}
             style={{ 
               width: '100%', 
               padding: '12px', 
               borderRadius: '12px', 
-              background: tier === 'starter' ? 'rgba(255,255,255,0.03)' : '#1877F2', 
-              color: tier === 'starter' ? 'rgba(255,255,255,0.3)' : 'white',
-              border: tier === 'starter' ? '1px solid rgba(255,255,255,0.05)' : 'none',
+              background: tier === 'starter' ? 'rgba(255,255,255,0.03)' : facebookConnected ? 'rgba(255,255,255,0.05)' : '#1877F2', 
+              color: tier === 'starter' ? 'rgba(255,255,255,0.3)' : facebookConnected ? 'rgba(255,255,255,0.6)' : 'white',
+              border: (tier === 'starter' || facebookConnected) ? '1px solid rgba(255,255,255,0.1)' : 'none',
               fontWeight: '600',
               cursor: tier === 'starter' ? 'not-allowed' : 'pointer',
               outline: 'none'
             }}
           >
-            {tier === 'starter' ? 'Upgrade to unlock' : 'Connect Facebook Page'}
+            {tier === 'starter' ? 'Upgrade to unlock' : facebookConnected ? 'Disconnect Platform' : 'Connect Facebook Page'}
           </button>
         </div>
 
@@ -566,27 +606,27 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   </span>
                 )}
               </div>
-              <p style={{ fontSize: '0.85rem', color: 'hsl(var(--text-muted))' }}>
-                Not connected
+              <p style={{ fontSize: '0.85rem', color: trustpilotConnected ? '#00C9A7' : 'hsl(var(--text-muted))' }}>
+                {trustpilotConnected ? '● Connected' : 'Not connected'}
               </p>
             </div>
           </div>
           <button 
             disabled={tier === 'starter'}
-            onClick={() => alert('Trustpilot integration setup coming soon!')}
+            onClick={trustpilotConnected ? () => handleDisconnectPlatform('trustpilot') : () => handleConnectPlatform('trustpilot')}
             style={{ 
               width: '100%', 
               padding: '12px', 
               borderRadius: '12px', 
-              background: tier === 'starter' ? 'rgba(255,255,255,0.03)' : '#00B67A', 
-              color: tier === 'starter' ? 'rgba(255,255,255,0.3)' : 'white',
-              border: tier === 'starter' ? '1px solid rgba(255,255,255,0.05)' : 'none',
+              background: tier === 'starter' ? 'rgba(255,255,255,0.03)' : trustpilotConnected ? 'rgba(255,255,255,0.05)' : '#00B67A', 
+              color: tier === 'starter' ? 'rgba(255,255,255,0.3)' : trustpilotConnected ? 'rgba(255,255,255,0.6)' : 'white',
+              border: (tier === 'starter' || trustpilotConnected) ? '1px solid rgba(255,255,255,0.1)' : 'none',
               fontWeight: '600',
               cursor: tier === 'starter' ? 'not-allowed' : 'pointer',
               outline: 'none'
             }}
           >
-            {tier === 'starter' ? 'Upgrade to unlock' : 'Connect Trustpilot'}
+            {tier === 'starter' ? 'Upgrade to unlock' : trustpilotConnected ? 'Disconnect Platform' : 'Connect Trustpilot'}
           </button>
         </div>
       </div>
