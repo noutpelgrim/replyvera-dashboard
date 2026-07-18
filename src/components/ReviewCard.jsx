@@ -120,6 +120,24 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
         "{review.comment}"
       </p>
 
+      {review.status === 'FLAGGED' && (
+        <div style={{
+          padding: '12px 16px',
+          background: 'rgba(239, 68, 68, 0.08)',
+          border: '1px solid rgba(239, 68, 68, 0.25)',
+          borderRadius: '10px',
+          color: '#F87171',
+          fontSize: '0.85rem',
+          fontWeight: '600',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '8px',
+          marginTop: '-8px'
+        }}>
+          <span>⚠️ Sensitive keyword or low rating detected. Autopilot paused. Held for review.</span>
+        </div>
+      )}
+
       <div className="glass" style={{
         padding: '20px',
         background: 'rgba(0,0,0,0.2)',
