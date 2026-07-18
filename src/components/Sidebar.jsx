@@ -29,6 +29,51 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
     { id: 'analytics', label: 'Analytics', icon: '📊' }
   ];
 
+  // Format the subscription tier names and colors beautifully
+  const getTierStyles = (plan) => {
+    switch (plan?.toLowerCase()) {
+      case 'agency':
+        return {
+          bg: 'rgba(16, 185, 129, 0.08)', // Green
+          border: 'rgba(16, 185, 129, 0.25)',
+          color: '#10B981',
+          name: 'Agency'
+        };
+      case 'multi_location':
+      case 'multilocation':
+        return {
+          bg: 'rgba(6, 182, 212, 0.08)', // Cyan
+          border: 'rgba(6, 182, 212, 0.25)',
+          color: '#06B6D4',
+          name: 'Multi-Location'
+        };
+      case 'autopilot':
+        return {
+          bg: 'rgba(139, 92, 246, 0.08)', // Purple
+          border: 'rgba(139, 92, 246, 0.25)',
+          color: '#A78BFA',
+          name: 'Autopilot'
+        };
+      case 'professional':
+        return {
+          bg: 'rgba(99, 102, 241, 0.08)', // Indigo
+          border: 'rgba(99, 102, 241, 0.25)',
+          color: '#818CF8',
+          name: 'Professional'
+        };
+      case 'starter':
+      default:
+        return {
+          bg: 'rgba(255, 255, 255, 0.03)', // Grey
+          border: 'rgba(255, 255, 255, 0.06)',
+          color: '#94A3B8',
+          name: plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : 'Starter'
+        };
+    }
+  };
+
+  const currentTier = getTierStyles(tier);
+
   return (
     <div className="glass card-shadow" style={{
       width: '240px',
@@ -128,16 +173,16 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
           margin: '0 0 12px 0',
           padding: '10px 14px',
           borderRadius: '12px',
-          background: tier === 'agency' ? 'rgba(16, 185, 129, 0.08)' : tier === 'professional' ? 'rgba(99, 102, 241, 0.08)' : 'rgba(255, 255, 255, 0.03)',
-          border: `1px solid ${tier === 'agency' ? 'rgba(16, 185, 129, 0.25)' : tier === 'professional' ? 'rgba(99, 102, 241, 0.25)' : 'rgba(255, 255, 255, 0.06)'}`,
-          color: tier === 'agency' ? '#10B981' : tier === 'professional' ? '#818CF8' : '#94A3B8',
+          background: currentTier.bg,
+          border: `1px solid ${currentTier.border}`,
+          color: currentTier.color,
           fontSize: '0.78rem',
           fontWeight: '700',
           textAlign: 'center',
           textTransform: 'uppercase',
           letterSpacing: '0.06em'
         }}>
-          💎 {tier} Plan
+          💎 {currentTier.name} Plan
         </div>
         <div className="glass" style={{ padding: '16px', fontSize: '0.8rem', color: 'hsl(var(--text-muted))', overflow: 'hidden' }}>
           <p>Logged in as</p>
