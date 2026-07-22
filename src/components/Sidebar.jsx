@@ -52,7 +52,7 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
           bg: 'rgba(139, 92, 246, 0.08)', // Purple
           border: 'rgba(139, 92, 246, 0.25)',
           color: '#A78BFA',
-          name: 'Autopilot'
+          name: 'Vera Autopilot'
         };
       case 'professional':
         return {

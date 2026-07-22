@@ -140,7 +140,7 @@ export default function Dashboard() {
 
   const handleRegenerate = async (id) => {
     try {
-      console.log(`🔄 Regenerating AI draft for review ${id}...`);
+      console.log(`✨ Regenerating Vera draft for review ${id}...`);
       const res = await fetch(`${API_BASE}/reviews/${id}/regenerate`, {
         method: 'POST'
       });

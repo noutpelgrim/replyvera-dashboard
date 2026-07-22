@@ -110,10 +110,12 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
           fontWeight: '700',
           padding: '4px 12px',
           borderRadius: '20px',
-          background: 'hsl(var(--bg-dark))',
-          border: `1px solid ${getStatusColor(review.status)}`,
-          color: getStatusColor(review.status)
-        }}>{review.status}</span>
+          background: review.status === 'PUBLISHED' ? 'rgba(0, 201, 167, 0.1)' : review.status === 'FLAGGED' ? 'rgba(239, 68, 68, 0.05)' : 'rgba(139, 92, 246, 0.05)',
+          border: review.status === 'PUBLISHED' ? '1px solid rgba(0, 201, 167, 0.4)' : review.status === 'FLAGGED' ? '1px solid rgba(239, 68, 68, 0.4)' : '1px solid rgba(139, 92, 246, 0.4)',
+          color: review.status === 'PUBLISHED' ? '#00C9A7' : review.status === 'FLAGGED' ? '#EF4444' : '#8B6FFF'
+        }}>
+          {review.status === 'PUBLISHED' ? '✓ AUTO-REPLIED' : review.status === 'FLAGGED' ? 'FLAGGED' : 'PENDING'}
+        </span>
       </div>
 
       <p style={{ color: 'hsl(var(--text-main))', fontStyle: 'italic', fontSize: '0.95rem' }}>
@@ -121,20 +123,8 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
       </p>
 
       {review.status === 'FLAGGED' && (
-        <div style={{
-          padding: '12px 16px',
-          background: 'rgba(239, 68, 68, 0.08)',
-          border: '1px solid rgba(239, 68, 68, 0.25)',
-          borderRadius: '10px',
-          color: '#F87171',
-          fontSize: '0.85rem',
-          fontWeight: '600',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '8px',
-          marginTop: '-8px'
-        }}>
-          <span>⚠️ Sensitive keyword or low rating detected. Autopilot paused. Held for review.</span>
+        <div style={{ marginTop: '16px', background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', padding: '12px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '8px', color: 'hsl(var(--destructive))', fontSize: '0.85rem', fontWeight: '600' }}>
+          <span>⚠️ Sensitive keyword or low rating detected. Vera paused autopilot. Held for review.</span>
         </div>
       )}
 
@@ -144,7 +134,7 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
         borderRadius: '12px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
-          <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--primary))' }}>✨ AI Suggested Reply</span>
+          <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--primary))' }}>✨ Vera's Suggested Reply</span>
           <button
             onClick={() => setIsEditing(!isEditing)}
             style={{ background: 'transparent', color: 'hsl(var(--text-muted))', fontSize: '0.8rem' }}

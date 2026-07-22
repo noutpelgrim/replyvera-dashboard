@@ -312,8 +312,8 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
             gap: '16px'
           }}>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: '700', color: 'white', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span>✨</span> Live AI Reply Preview
+              <h3 style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px', color: 'hsl(var(--primary))' }}>
+                <span>✨</span> Live Vera Reply Preview
               </h3>
               <p style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))', marginTop: '4px' }}>
                 Test how Vera replies using your current tone and instructions.
@@ -373,7 +373,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                 cursor: 'pointer'
               }}
             >
-              {loadingPreview ? 'Generating draft...' : 'Test AI Response'}
+              {loadingPreview ? '✨ Vera is drafting...' : 'Test Vera\'s Response'}
             </button>
 
             {previewResult && (
