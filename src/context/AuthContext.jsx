@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }) => {
       }
     }),
     signUp: (email, password, options = {}) => supabase.auth.signUp({ email, password, ...options }),
+    updatePassword: (newPassword) => supabase.auth.updateUser({ password: newPassword }),
     signOut: () => supabase.auth.signOut(),
   };
 
