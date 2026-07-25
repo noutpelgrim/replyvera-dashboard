@@ -658,6 +658,119 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
             {tier === 'starter' ? 'Upgrade to unlock' : trustpilotRequested ? 'Interest Registered ✓' : 'Notify me when available'}
           </button>
         </div>
+
+        {/* Account & Security Settings */}
+        <div className="glass-card" style={{
+          padding: '24px',
+          borderRadius: '20px',
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.05)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '18px'
+        }}>
+          <div>
+            <h3 style={{ fontWeight: '700', fontSize: '1.1rem', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span>🔒</span> Account Security & Password
+            </h3>
+            <p style={{ fontSize: '0.8rem', color: 'hsl(var(--text-muted))' }}>
+              Update your account login password.
+            </p>
+          </div>
+
+          <div style={{
+            padding: '10px 14px',
+            borderRadius: '10px',
+            background: 'rgba(255, 255, 255, 0.03)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px'
+          }}>
+            <span style={{ fontSize: '0.9rem' }}>👤</span>
+            <div style={{ overflow: 'hidden' }}>
+              <div style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))', fontWeight: '700', textTransform: 'uppercase' }}>Active User</div>
+              <div style={{ fontSize: '0.85rem', fontWeight: '600', color: 'white', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                {user?.email || 'Guest User'}
+              </div>
+            </div>
+          </div>
+
+          <form onSubmit={handlePasswordChange} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+            <div>
+              <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#E0E0FF', display: 'block', marginBottom: '6px' }}>New Password</label>
+              <input
+                type="password"
+                placeholder="Enter new password (min. 6 chars)"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  borderRadius: '8px',
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: 'white',
+                  fontSize: '0.85rem',
+                  outline: 'none'
+                }}
+              />
+            </div>
+
+            <div>
+              <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#E0E0FF', display: 'block', marginBottom: '6px' }}>Confirm Password</label>
+              <input
+                type="password"
+                placeholder="Re-enter new password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '10px 12px',
+                  borderRadius: '8px',
+                  background: 'rgba(0, 0, 0, 0.3)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  color: 'white',
+                  fontSize: '0.85rem',
+                  outline: 'none'
+                }}
+              />
+            </div>
+
+            {passwordMessage && (
+              <div style={{
+                padding: '8px 12px',
+                borderRadius: '8px',
+                fontSize: '0.8rem',
+                fontWeight: '600',
+                background: passwordMessage.type === 'success' ? 'rgba(0, 201, 167, 0.15)' : 'rgba(255, 77, 77, 0.15)',
+                border: passwordMessage.type === 'success' ? '1px solid rgba(0, 201, 167, 0.3)' : '1px solid rgba(255, 77, 77, 0.3)',
+                color: passwordMessage.type === 'success' ? '#00C9A7' : '#FF4D4D'
+              }}>
+                {passwordMessage.type === 'success' ? '✓ ' : '⚠️ '}{passwordMessage.text}
+              </div>
+            )}
+
+            <button
+              type="submit"
+              disabled={updatingPassword}
+              style={{
+                padding: '12px',
+                borderRadius: '10px',
+                background: 'linear-gradient(135deg, #6C47FF 0%, #00C9A7 100%)',
+                color: 'white',
+                fontWeight: '700',
+                fontSize: '0.85rem',
+                border: 'none',
+                cursor: updatingPassword ? 'not-allowed' : 'pointer',
+                opacity: updatingPassword ? 0.6 : 1,
+                boxShadow: '0 4px 15px rgba(108, 71, 255, 0.3)'
+              }}
+            >
+              {updatingPassword ? 'Updating...' : 'Update Password'}
+            </button>
+          </form>
+        </div>
       </div>
       {/* Custom Glassmorphic Toast Notification */}
       {notification && createPortal(
