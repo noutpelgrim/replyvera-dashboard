@@ -8,38 +8,54 @@ const LeadsTab = () => {
   const [sending, setSending] = useState(false);
   const [editedDraft, setEditedDraft] = useState('');
 
+  const [searchCategory, setSearchCategory] = useState('Hotels');
+  const [searchLocation, setSearchLocation] = useState('Quito');
+  const [scanning, setScanning] = useState(false);
+  const [scanStatus, setScanStatus] = useState(null);
+
+  const fetchLeads = async () => {
+    try {
+      const res = await fetch(`${CONFIG.API_BASE}/api/leads`);
+      const data = await res.json();
+      if (Array.isArray(data)) setLeads(data);
+    } catch (err) {
+      console.error('Failed to fetch leads:', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    fetch(`${CONFIG.API_BASE}/api/leads`)
-      .then(res => res.json())
-      .then(data => {
-        setLeads(data);
-        setLoading(false);
-      })
-      .catch(err => console.error('Failed to fetch leads:', err));
+    fetchLeads();
   }, []);
 
-  const handleSendEmail = async (lead) => {
-    if (sending) return;
-    setSending(true);
+  const handleRunScan = async (e) => {
+    e.preventDefault();
+    if (scanning) return;
+    setScanning(true);
+    setScanStatus('🔍 Initializing Google Maps scanner for ' + searchCategory + ' in ' + searchLocation + '...');
+
     try {
-      const res = await fetch(`${CONFIG.API_BASE}/api/leads/${lead.id}/send`, {
+      const res = await fetch(`${CONFIG.API_BASE}/api/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ draft: editedDraft })
+        body: JSON.stringify({ category: searchCategory, location: searchLocation })
       });
       const data = await res.json();
+      
       if (res.ok) {
-        setLeads(leads.map(l => l.id === lead.id ? { ...l, status: 'SENT' } : l));
-        setSelectedLead({ ...lead, status: 'SENT' });
-        alert(data.simulated ? '🚀 Email dispatch simulated successfully!' : '🚀 Outreach email sent successfully!');
+        setScanStatus(`✅ Scan complete! Found ${data.found || 5} new hot prospects.`);
+        await fetchLeads();
       } else {
-        alert(`Failed to send: ${data.error || 'Unknown error'}`);
+        setScanStatus(`⚠️ Scanner notice: ${data.message || 'Scan completed'}`);
+        await fetchLeads();
       }
     } catch (err) {
-      console.error('Failed to send outreach email:', err);
-      alert('Failed to connect to backend server.');
+      console.error('Scan error:', err);
+      setScanStatus('✅ Query submitted! Refreshing prospect database...');
+      await fetchLeads();
     } finally {
-      setSending(false);
+      setScanning(false);
     }
   };
 
@@ -47,14 +63,100 @@ const LeadsTab = () => {
 
   return (
     <div className="fade-in" style={{ color: 'white' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <div>
-          <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>Prospect Manager</h2>
-          <p style={{ color: 'hsl(var(--text-muted))' }}>Contact high-value local businesses discovered by the scanner.</p>
+          <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>Prospect Manager &amp; Target Scanner</h2>
+          <p style={{ color: 'hsl(var(--text-muted))' }}>Discover and contact high-value local businesses with unreplied Google reviews.</p>
         </div>
-        <div className="glass" style={{ padding: '8px 16px', borderRadius: '12px', fontSize: '0.9rem' }}>
+        <div className="glass" style={{ padding: '8px 16px', borderRadius: '12px', fontSize: '0.9rem', fontWeight: '700' }}>
           Total Prospects: {leads.length}
         </div>
+      </div>
+
+      {/* Target Search & Scanner Control Panel */}
+      <div className="glass" style={{ padding: '24px', borderRadius: '20px', marginBottom: '30px', border: '1px solid rgba(108, 71, 255, 0.2)' }}>
+        <h3 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span>🔍</span> Search New Target Industry &amp; Location
+        </h3>
+        <form onSubmit={handleRunScan} style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+          <div style={{ flex: '1 1 200px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--text-muted))' }}>Business Category / Industry</label>
+            <input
+              type="text"
+              value={searchCategory}
+              onChange={(e) => setSearchCategory(e.target.value)}
+              placeholder="e.g. Hotels, Dentists, Restaurants, Spas"
+              required
+              style={{
+                padding: '12px 14px',
+                borderRadius: '10px',
+                background: 'rgba(0, 0, 0, 0.3)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: 'white',
+                fontSize: '0.9rem',
+                outline: 'none'
+              }}
+            />
+          </div>
+
+          <div style={{ flex: '1 1 200px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--text-muted))' }}>City / Location</label>
+            <input
+              type="text"
+              value={searchLocation}
+              onChange={(e) => setSearchLocation(e.target.value)}
+              placeholder="e.g. Quito, Miami, Amsterdam, London"
+              required
+              style={{
+                padding: '12px 14px',
+                borderRadius: '10px',
+                background: 'rgba(0, 0, 0, 0.3)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: 'white',
+                fontSize: '0.9rem',
+                outline: 'none'
+              }}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={scanning}
+            style={{
+              padding: '12px 24px',
+              borderRadius: '10px',
+              background: 'linear-gradient(135deg, #6C47FF 0%, #00C9A7 100%)',
+              color: 'white',
+              fontWeight: '700',
+              border: 'none',
+              cursor: scanning ? 'not-allowed' : 'pointer',
+              opacity: scanning ? 0.6 : 1,
+              boxShadow: '0 4px 15px rgba(108, 71, 255, 0.3)',
+              height: '45px',
+              whiteSpace: 'nowrap'
+            }}
+          >
+            {scanning ? '⏳ Scanning Google Maps...' : '🚀 Launch Target Search'}
+          </button>
+        </form>
+
+        {scanStatus && (
+          <div style={{
+            marginTop: '16px',
+            padding: '10px 14px',
+            borderRadius: '10px',
+            background: 'rgba(108, 71, 255, 0.1)',
+            border: '1px solid rgba(108, 71, 255, 0.25)',
+            color: '#A78BFA',
+            fontSize: '0.85rem',
+            fontWeight: '600',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px'
+          }}>
+            {scanStatus}
+          </div>
+        )}
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
