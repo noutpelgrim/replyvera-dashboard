@@ -64,6 +64,32 @@ const LeadsTab = () => {
     }
   };
 
+  const [clearing, setClearing] = useState(false);
+
+  const handleClearLeads = async () => {
+    if (leads.length === 0) return;
+    if (!window.confirm('Are you sure you want to clear all prospect targets and reset the list to 0?')) return;
+    
+    setClearing(true);
+    try {
+      const res = await fetch(`${CONFIG.API_BASE}/api/leads`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        setLeads([]);
+        setSelectedLead(null);
+        setScanStatus('🗑️ Prospect list successfully reset to 0.');
+      } else {
+        alert('Failed to clear prospects.');
+      }
+    } catch (err) {
+      console.error('Failed to clear prospects:', err);
+      alert('Error connecting to backend server.');
+    } finally {
+      setClearing(false);
+    }
+  };
+
   if (loading) return <div style={{ color: 'white', padding: '20px' }}>Loading prospect database...</div>;
 
   return (
@@ -73,8 +99,28 @@ const LeadsTab = () => {
           <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>Prospect Manager &amp; Target Scanner</h2>
           <p style={{ color: 'hsl(var(--text-muted))' }}>Discover and contact high-value local businesses with unreplied Google reviews.</p>
         </div>
-        <div className="glass" style={{ padding: '8px 16px', borderRadius: '12px', fontSize: '0.9rem', fontWeight: '700' }}>
-          Total Prospects: {leads.length}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="glass" style={{ padding: '8px 16px', borderRadius: '12px', fontSize: '0.9rem', fontWeight: '700' }}>
+            Total Prospects: {leads.length}
+          </div>
+          <button
+            onClick={handleClearLeads}
+            disabled={clearing || leads.length === 0}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '12px',
+              background: 'rgba(239, 68, 68, 0.15)',
+              border: '1px solid rgba(239, 68, 68, 0.3)',
+              color: '#FCA5A5',
+              fontSize: '0.85rem',
+              fontWeight: '700',
+              cursor: (clearing || leads.length === 0) ? 'not-allowed' : 'pointer',
+              opacity: (clearing || leads.length === 0) ? 0.4 : 1,
+              transition: 'all 0.2s ease'
+            }}
+          >
+            {clearing ? 'Clearing...' : '🗑️ Clear Targets to 0'}
+          </button>
         </div>
       </div>
 
