@@ -30,6 +30,33 @@ const LeadsTab = () => {
     fetchLeads();
   }, []);
 
+  const handleSendEmail = async (lead) => {
+    if (!lead || sending) return;
+    setSending(true);
+
+    try {
+      const res = await fetch(`${CONFIG.API_BASE}/api/leads/${lead.id}/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ draft: editedDraft })
+      });
+      const data = await res.json();
+
+      if (res.ok) {
+        setScanStatus(`✉️ Outreach email successfully sent to ${lead.business_name} (${lead.email})!`);
+        setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, status: 'SENT', outreach_draft: editedDraft } : l));
+        setSelectedLead(prev => ({ ...prev, status: 'SENT', outreach_draft: editedDraft }));
+      } else {
+        alert(data.error || 'Failed to send email.');
+      }
+    } catch (err) {
+      console.error('Error sending email:', err);
+      alert('Network error trying to send outreach email.');
+    } finally {
+      setSending(false);
+    }
+  };
+
   const handleRunScan = async (e) => {
     e.preventDefault();
     if (scanning) return;
