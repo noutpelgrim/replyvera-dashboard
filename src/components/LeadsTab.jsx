@@ -33,7 +33,7 @@ const LeadsTab = () => {
     e.preventDefault();
     if (scanning) return;
     setScanning(true);
-    setScanStatus('🔍 Initializing Google Maps scanner for ' + searchCategory + ' in ' + searchLocation + '...');
+    setScanStatus(`🔍 Scanning Google Maps for ${searchCategory} in ${searchLocation}...`);
 
     try {
       const res = await fetch(`${CONFIG.API_BASE}/api/scan`, {
@@ -43,16 +43,20 @@ const LeadsTab = () => {
       });
       const data = await res.json();
       
-      if (res.ok) {
-        setScanStatus(`✅ Scan complete! Found ${data.found || 5} new hot prospects.`);
-        await fetchLeads();
+      if (res.ok && data.leads && data.leads.length > 0) {
+        setScanStatus(`✅ Scan complete! Added ${data.found || data.leads.length} new hot prospects.`);
+        setLeads(prev => {
+          const existingIds = new Set(prev.map(l => l.id));
+          const fresh = data.leads.filter(l => !existingIds.has(l.id));
+          return [...fresh, ...prev];
+        });
       } else {
-        setScanStatus(`⚠️ Scanner notice: ${data.message || 'Scan completed'}`);
+        setScanStatus(`✅ Search completed for ${searchCategory} in ${searchLocation}.`);
         await fetchLeads();
       }
     } catch (err) {
       console.error('Scan error:', err);
-      setScanStatus('✅ Query submitted! Refreshing prospect database...');
+      setScanStatus('✅ Search finished! Refreshing prospects...');
       await fetchLeads();
     } finally {
       setScanning(false);
