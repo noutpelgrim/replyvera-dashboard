@@ -10,6 +10,7 @@ const LeadsTab = () => {
 
   const [searchCategory, setSearchCategory] = useState('Hotels');
   const [searchLocation, setSearchLocation] = useState('Quito');
+  const [ratingFilter, setRatingFilter] = useState('all');
   const [scanning, setScanning] = useState(false);
   const [scanStatus, setScanStatus] = useState(null);
 
@@ -33,13 +34,13 @@ const LeadsTab = () => {
     e.preventDefault();
     if (scanning) return;
     setScanning(true);
-    setScanStatus(`🔍 Scanning Google Maps for ${searchCategory} in ${searchLocation}...`);
+    setScanStatus(`🔍 Scanning Google Maps for ${searchCategory} in ${searchLocation} (${ratingFilter === 'low' ? 'Low Rated < 4★' : ratingFilter === 'high' ? 'High Rated 4+★' : 'All Ratings'})...`);
 
     try {
       const res = await fetch(`${CONFIG.API_BASE}/api/leads/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category: searchCategory, location: searchLocation })
+        body: JSON.stringify({ category: searchCategory, location: searchLocation, ratingFilter })
       });
       const data = await res.json();
       
@@ -83,13 +84,33 @@ const LeadsTab = () => {
           <span>🔍</span> Search New Target Industry &amp; Location
         </h3>
         <form onSubmit={handleRunScan} style={{ display: 'flex', gap: '16px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
-          <div style={{ flex: '1 1 200px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+          <div style={{ flex: '1 1 180px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <label style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--text-muted))' }}>Business Category / Industry</label>
             <input
               type="text"
               value={searchCategory}
               onChange={(e) => setSearchCategory(e.target.value)}
-              placeholder="e.g. Hotels, Dentists, Restaurants, Spas"
+              placeholder="e.g. Hotels, Dentists, Spas"
+              required
+              style={{
+                padding: '12px 14px',
+                borderRadius: '10px',
+                background: 'rgba(0, 0, 0, 0.3)',
+                border: '1px solid rgba(255,255,255,0.1)',
+                color: 'white',
+                fontSize: '0.9rem',
+                outline: 'none'
+              }}
+            />
+          </div>
+
+          <div style={{ flex: '1 1 180px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--text-muted))' }}>City / Location</label>
+            <input
+              type="text"
+              value={searchLocation}
+              onChange={(e) => setSearchLocation(e.target.value)}
+              placeholder="e.g. Quito, Miami, Amsterdam"
               required
               style={{
                 padding: '12px 14px',
@@ -104,13 +125,10 @@ const LeadsTab = () => {
           </div>
 
           <div style={{ flex: '1 1 200px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-            <label style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--text-muted))' }}>City / Location</label>
-            <input
-              type="text"
-              value={searchLocation}
-              onChange={(e) => setSearchLocation(e.target.value)}
-              placeholder="e.g. Quito, Miami, Amsterdam, London"
-              required
+            <label style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--text-muted))' }}>Target Rating Strategy</label>
+            <select
+              value={ratingFilter}
+              onChange={(e) => setRatingFilter(e.target.value)}
               style={{
                 padding: '12px 14px',
                 borderRadius: '10px',
@@ -118,9 +136,14 @@ const LeadsTab = () => {
                 border: '1px solid rgba(255,255,255,0.1)',
                 color: 'white',
                 fontSize: '0.9rem',
-                outline: 'none'
+                outline: 'none',
+                cursor: 'pointer'
               }}
-            />
+            >
+              <option value="all" style={{ background: '#1A1A32', color: 'white' }}>🌐 All Ratings (1.0★ - 5.0★)</option>
+              <option value="low" style={{ background: '#1A1A32', color: 'white' }}>🚨 Low Rated / Crisis (Under 4.0★)</option>
+              <option value="high" style={{ background: '#1A1A32', color: 'white' }}>⭐ High Rated / Top (4.0★ - 5.0★)</option>
+            </select>
           </div>
 
           <button
