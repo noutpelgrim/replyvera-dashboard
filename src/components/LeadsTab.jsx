@@ -36,7 +36,7 @@ const LeadsTab = () => {
     setScanStatus(`🔍 Scanning Google Maps for ${searchCategory} in ${searchLocation}...`);
 
     try {
-      const res = await fetch(`${CONFIG.API_BASE}/api/scan`, {
+      const res = await fetch(`${CONFIG.API_BASE}/api/leads/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ category: searchCategory, location: searchLocation })
