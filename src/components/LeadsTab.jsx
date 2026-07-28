@@ -14,11 +14,48 @@ const LeadsTab = () => {
   const [scanning, setScanning] = useState(false);
   const [scanStatus, setScanStatus] = useState(null);
 
+  const getStandardDraft = (lead) => {
+    if (!lead) return '';
+    const name = lead.business_name || lead.Name || 'your team';
+    const rating = lead.rating || lead.Rating || '4.8';
+    return `Subject: Quick question regarding unreplied Google reviews for ${name}
+
+Hi ${name} Team,
+
+I was reviewing your Google Maps profile today and noticed your impressive ${rating}-star rating!
+
+However, I saw that customer reviews currently have zero response. Unreplied reviews reduce customer trust and lower your local Google Maps search ranking.
+
+ReplyVera works 24/7 to automatically draft personalized, professional responses to 100% of your Google reviews in under 3 seconds—even while you're busy or closed—while safely holding negative or sensitive complaints for human approval.
+
+✓ Works 24/7 on autopilot
+✓ Save 5–10 hours every week
+✓ Increase customer trust
+✓ 100% Google Business Profile compliant
+
+Would you be open to a 14-day free trial to see how it works for ${name}?
+
+Best regards,
+Nout | Founder, ReplyVera
+nout@replyvera.com
+www.replyvera.com`;
+  };
+
   const fetchLeads = async () => {
     try {
       const res = await fetch(`${CONFIG.API_BASE}/api/leads`);
       const data = await res.json();
-      if (Array.isArray(data)) setLeads(data);
+      if (Array.isArray(data)) {
+        const standardized = data.map(l => ({
+          ...l,
+          outreach_draft: getStandardDraft(l)
+        }));
+        setLeads(standardized);
+        if (standardized.length > 0) {
+          setSelectedLead(standardized[0]);
+          setEditedDraft(standardized[0].outreach_draft);
+        }
+      }
     } catch (err) {
       console.error('Failed to fetch leads:', err);
     } finally {
@@ -75,8 +112,16 @@ const LeadsTab = () => {
         setScanStatus(`✅ Scan complete! Added ${data.found || data.leads.length} new hot prospects.`);
         setLeads(prev => {
           const existingIds = new Set(prev.map(l => l.id));
-          const fresh = data.leads.filter(l => !existingIds.has(l.id));
-          return [...fresh, ...prev];
+          const fresh = data.leads.map(l => ({
+            ...l,
+            outreach_draft: getStandardDraft(l)
+          })).filter(l => !existingIds.has(l.id));
+          const combined = [...fresh, ...prev];
+          if (fresh.length > 0) {
+            setSelectedLead(fresh[0]);
+            setEditedDraft(getStandardDraft(fresh[0]));
+          }
+          return combined;
         });
       } else {
         setScanStatus(`✅ Search completed for ${searchCategory} in ${searchLocation}.`);
@@ -267,7 +312,7 @@ const LeadsTab = () => {
               key={lead.id}
               onClick={() => {
                 setSelectedLead(lead);
-                setEditedDraft(lead.outreach_draft || '');
+                setEditedDraft(getStandardDraft(lead));
               }}
               className={`glass-card ${selectedLead?.id === lead.id ? 'active-card' : ''}`}
               style={{
