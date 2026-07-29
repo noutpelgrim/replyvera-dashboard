@@ -19,12 +19,13 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
       .catch(err => console.error('Failed to fetch user tier:', err));
   }, [user?.email]);
 
-  const isAdmin = user?.email === 'noutpelgrim@hotmail.com';
+  const isAdmin = user?.email === 'noutpelgrim@hotmail.com' || user?.email === 'nout@replyvera.com';
   const isAgency = tier === 'agency';
 
   const tabs = [
     { id: 'reviews', label: 'Reviews', icon: '💬' },
     ...((isAdmin || isAgency) ? [{ id: 'leads', label: 'Prospects', icon: '🚀' }] : []),
+    ...(isAdmin ? [{ id: 'outreach', label: 'Outreach Tracking', icon: '📈', externalUrl: 'https://www.replyvera.com/dashboard.html?admin=nout' }] : []),
     { id: 'settings', label: 'Automation', icon: '⚙️' },
     { id: 'analytics', label: 'Analytics', icon: '📊' }
   ];
@@ -147,7 +148,13 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
         {tabs.map(tab => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => {
+              if (tab.externalUrl) {
+                window.open(tab.externalUrl, '_blank');
+              } else {
+                setActiveTab(tab.id);
+              }
+            }}
             style={{
               display: 'flex',
               alignItems: 'center',
