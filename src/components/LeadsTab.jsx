@@ -67,6 +67,40 @@ www.replyvera.com`;
     fetchLeads();
   }, []);
 
+  
+  const handleSendAllLeads = async () => {
+    const unsent = leads.filter(l => l.status === 'NEW' && l.email && l.email.includes('@') && !l.email.includes('leaflet@'));
+    if (unsent.length === 0) {
+      alert('No new valid prospects to email.');
+      return;
+    }
+
+    if (!window.confirm(`Are you sure you want to send outreach emails to all ${unsent.length} unsent prospects now?`)) return;
+
+    setSending(true);
+    let successCount = 0;
+
+    for (const lead of unsent) {
+      try {
+        const res = await fetch(`${CONFIG.API_BASE}/api/leads/${lead.id}/send`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ draft: lead.outreach_draft })
+        });
+        if (res.ok) {
+          successCount++;
+          setLeads(prev => prev.map(l => l.id === lead.id ? { ...l, status: 'SENT' } : l));
+        }
+      } catch (err) {
+        console.error(`Failed sending to ${lead.business_name}:`, err);
+      }
+    }
+
+    setSending(false);
+    setScanStatus(`✉️ Outreach complete! Successfully dispatched ${successCount} outreach emails.`);
+    fetchLeads();
+  };
+
   const handleSendEmail = async (lead) => {
     if (!lead || sending) return;
     setSending(true);
@@ -175,6 +209,24 @@ www.replyvera.com`;
           <div className="glass" style={{ padding: '8px 16px', borderRadius: '12px', fontSize: '0.9rem', fontWeight: '700' }}>
             Total Prospects: {leads.length}
           </div>
+          <button
+            onClick={handleSendAllLeads}
+            disabled={sending || leads.length === 0}
+            style={{
+              padding: '8px 16px',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, #6C47FF 0%, #00C9A7 100%)',
+              color: 'white',
+              fontSize: '0.85rem',
+              fontWeight: '700',
+              border: 'none',
+              cursor: sending ? 'not-allowed' : 'pointer',
+              boxShadow: '0 4px 12px rgba(108, 71, 255, 0.3)',
+              marginRight: '8px'
+            }}
+          >
+            {sending ? '⏳ Dispatching All...' : '🚀 Send All Outreach Emails'}
+          </button>
           <button
             onClick={handleClearLeads}
             disabled={clearing || leads.length === 0}
