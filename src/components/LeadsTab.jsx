@@ -78,6 +78,33 @@ Founder | ReplyVera
   }, []);
 
   
+  
+  const handleDeleteSingleLead = async (leadId, e) => {
+    if (e) e.stopPropagation();
+    const lead = leads.find(l => l.id === leadId);
+    if (!lead) return;
+    if (!window.confirm(`Are you sure you want to delete ${lead.business_name}?`)) return;
+
+    try {
+      const res = await fetch(`${CONFIG.API_BASE}/api/leads/${leadId}`, {
+        method: 'DELETE'
+      });
+      if (res.ok) {
+        setLeads(prev => prev.filter(l => l.id !== leadId));
+        if (selectedLead?.id === leadId) {
+          const remaining = leads.filter(l => l.id !== leadId);
+          setSelectedLead(remaining.length > 0 ? remaining[0] : null);
+        }
+        setScanStatus(`🗑️ Deleted ${lead.business_name} from prospect database.`);
+      } else {
+        alert('Failed to delete lead.');
+      }
+    } catch (err) {
+      console.error('Failed deleting lead:', err);
+      alert('Error connecting to backend server.');
+    }
+  };
+
   const handleSendAllLeads = async () => {
     const unsent = leads.filter(l => l.status === 'NEW' && l.email && l.email.includes('@') && !l.email.includes('leaflet@'));
     if (unsent.length === 0) {
@@ -384,9 +411,26 @@ Founder | ReplyVera
                 transition: 'all 0.3s ease'
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: '700' }}>{lead.business_name}</h3>
-                <span style={{ color: '#FFB800' }}>★ {lead.rating}</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ color: '#FFB800' }}>★ {lead.rating}</span>
+                  <button
+                    onClick={(e) => handleDeleteSingleLead(lead.id, e)}
+                    title="Delete lead"
+                    style={{
+                      background: 'rgba(239, 68, 68, 0.12)',
+                      border: '1px solid rgba(239, 68, 68, 0.3)',
+                      color: '#FCA5A5',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      fontSize: '0.75rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    🗑️
+                  </button>
+                </div>
               </div>
               <p style={{ fontSize: '0.8rem', color: 'hsl(var(--text-muted))', marginTop: '4px' }}>{lead.address}</p>
               <div style={{ display: 'flex', gap: '12px', marginTop: '12px', fontSize: '0.8rem' }}>
