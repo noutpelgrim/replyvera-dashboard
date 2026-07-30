@@ -79,6 +79,38 @@ Founder | ReplyVera
 
   
   
+  
+  const handleEditLeadEmail = async (leadId, e) => {
+    if (e) e.stopPropagation();
+    const lead = leads.find(l => l.id === leadId);
+    if (!lead) return;
+
+    const newEmail = window.prompt(`Enter correct email address for ${lead.business_name}:`, lead.email || '');
+    if (!newEmail || newEmail.trim() === '' || newEmail.trim() === lead.email) return;
+
+    const trimmedEmail = newEmail.trim().toLowerCase();
+
+    try {
+      const res = await fetch(`${CONFIG.API_BASE}/api/leads/${leadId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: trimmedEmail })
+      });
+      if (res.ok) {
+        setLeads(prev => prev.map(l => l.id === leadId ? { ...l, email: trimmedEmail } : l));
+        if (selectedLead?.id === leadId) {
+          setSelectedLead(prev => ({ ...prev, email: trimmedEmail }));
+        }
+        setScanStatus(`✏️ Updated email for ${lead.business_name} to ${trimmedEmail}`);
+      } else {
+        alert('Failed to update email address.');
+      }
+    } catch (err) {
+      console.error('Failed editing lead email:', err);
+      alert('Error connecting to backend server.');
+    }
+  };
+
   const handleDeleteSingleLead = async (leadId, e) => {
     if (e) e.stopPropagation();
     const lead = leads.find(l => l.id === leadId);
@@ -415,6 +447,21 @@ Founder | ReplyVera
                 <h3 style={{ fontSize: '1.1rem', fontWeight: '700' }}>{lead.business_name}</h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <span style={{ color: '#FFB800' }}>★ {lead.rating}</span>
+                  <button
+                    onClick={(e) => handleDeleteSingleLead(lead.id, e)}
+                    title="Edit email address"
+                    style={{
+                      background: 'rgba(108, 71, 255, 0.15)',
+                      border: '1px solid rgba(108, 71, 255, 0.3)',
+                      color: '#A78BFA',
+                      padding: '4px 8px',
+                      borderRadius: '6px',
+                      fontSize: '0.75rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    ✏️ Edit
+                  </button>
                   <button
                     onClick={(e) => handleDeleteSingleLead(lead.id, e)}
                     title="Delete lead"
