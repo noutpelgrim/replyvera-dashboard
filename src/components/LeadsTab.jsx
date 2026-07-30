@@ -448,7 +448,7 @@ Founder | ReplyVera
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                   <span style={{ color: '#FFB800' }}>★ {lead.rating}</span>
                   <button
-                    onClick={(e) => handleDeleteSingleLead(lead.id, e)}
+                    onClick={(e) => handleEditLeadEmail(lead.id, e)}
                     title="Edit email address"
                     style={{
                       background: 'rgba(108, 71, 255, 0.15)',
