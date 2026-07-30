@@ -148,7 +148,7 @@ Founder | ReplyVera
       const res = await fetch(`${CONFIG.API_BASE}/api/leads/scan`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ category: searchCategory, location: searchLocation, ratingFilter })
+        body: JSON.stringify({ category: searchCategory, location: searchLocation, ratingFilter, limit: 50 })
       });
       const data = await res.json();
       
