@@ -16,29 +16,39 @@ const LeadsTab = () => {
 
   const getStandardDraft = (lead) => {
     if (!lead) return '';
-    const name = lead.business_name || lead.Name || 'your team';
+    const name = lead.business_name || lead.Name || 'your business';
     const rating = lead.rating || lead.Rating || '4.8';
-    return `Subject: Quick question regarding unreplied Google reviews for ${name}
+    return `Subject: A quick idea for ${name}
 
 Hi ${name} Team,
 
-I was reviewing your Google Maps profile today and noticed your impressive ${rating}-star rating!
+I came across ${name} on Google today and noticed your excellent ${rating}★ rating—congratulations!
 
-However, I saw that customer reviews currently have zero response. Unreplied reviews reduce customer trust and lower your local Google Maps search ranking.
+I also noticed that several customer reviews haven't received a response yet. That's completely understandable when you're busy, but consistently replying to reviews helps build trust with future customers and keeps your Google Business Profile active and engaging.
 
-ReplyVera works 24/7 to automatically draft personalized, professional responses to 100% of your Google reviews in under 3 seconds—even while you're busy or closed—while safely holding negative or sensitive complaints for human approval.
+That's exactly why I created ReplyVera.
 
-✓ Works 24/7 on autopilot
-✓ Save 5–10 hours every week
-✓ Increase customer trust
-✓ 100% Google Business Profile compliant
+ReplyVera uses AI to generate natural, personalized replies to your Google reviews in under 3 seconds. Positive reviews can be published automatically, while negative or sensitive reviews are held for your approval—so you always stay in complete control.
 
-Would you be open to a 14-day free trial to see how it works for ${name}?
+With ReplyVera, you can:
+✅ Reply to every Google review, 24/7
+✅ Save 5–10 hours every week
+✅ Build trust with future customers
+✅ Keep your Google Business Profile active with consistent engagement
+✅ Strengthen your local online presence over time
+✅ Maintain your unique brand voice
+✅ Stay fully compliant with Google Business Profile guidelines
+
+I'd love to offer ${name} a 14-day free trial, completely free and with no obligation, so you can see how it works with your own Google reviews.
+
+Would you be open to giving it a try?
 
 Best regards,
-Nout | Founder, ReplyVera
-nout@replyvera.com
-www.replyvera.com`;
+
+Nout
+Founder | ReplyVera
+📧 nout@replyvera.com
+🌐 www.replyvera.com`;
   };
 
   const fetchLeads = async () => {
