@@ -155,34 +155,11 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
       </div>
 
       {review.status === 'PUBLISHED' ? (
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', justifyContent: 'flex-end' }}>
-          <button
-            onClick={() => {
-              if (review.drafted_reply) {
-                navigator.clipboard.writeText(review.drafted_reply);
-              }
-              window.open('https://www.google.com/maps/place/The+Mudhouse+Hostel/@0.8587,-79.9912,17z/', '_blank');
-            }}
-            style={{
-              padding: '8px 16px',
-              borderRadius: '8px',
-              background: 'rgba(0, 201, 167, 0.15)',
-              border: '1px solid rgba(0, 201, 167, 0.4)',
-              color: '#00C9A7',
-              fontWeight: '700',
-              fontSize: '0.85rem',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px'
-            }}
-          >
-            📋 Copy & Open Google Maps
-          </button>
-          <span style={{ color: '#00C9A7', fontWeight: '700', fontSize: '0.9rem' }}>✓ Replied</span>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center', justifyContent: 'flex-end', color: '#00C9A7', fontWeight: '700', fontSize: '0.9rem' }}>
+          <span>✓ Replied on Google Maps</span>
         </div>
       ) : (
-        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
           <button
             onClick={() => onRegenerate(review.id)}
             style={{
@@ -198,12 +175,7 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
             🔄 Regenerate
           </button>
           <button
-            onClick={() => {
-              if (draft) {
-                try { navigator.clipboard.writeText(draft); } catch (e) {}
-              }
-              onApprove(review.id, draft);
-            }}
+            onClick={() => onApprove(review.id, draft)}
             style={{
               padding: '10px 24px',
               borderRadius: '8px',
