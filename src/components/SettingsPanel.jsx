@@ -469,10 +469,16 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               ) : (
                 <div style={{ padding: '20px', background: error ? 'rgba(255,68,68,0.05)' : 'rgba(255,165,0,0.05)', border: error ? '1px solid rgba(255,68,68,0.2)' : '1px solid rgba(255,165,0,0.2)', borderRadius: '16px', fontSize: '0.85rem' }}>
                   <div style={{ color: error ? '#ff4d4d' : '#FFA500', fontWeight: '700', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    {error ? '❌ API Error' : '⚠️ No locations found'}
+                    {error?.includes('invalid_grant') ? '🔑 Google Authorization Expired' : error ? '❌ API Error' : '⚠️ No locations found'}
                   </div>
-                  <p style={{ color: 'rgba(255,255,255,0.6)', lineHeight: '1.5' }}>
-                    {error || (
+                  <div style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.5' }}>
+                    {error?.includes('invalid_grant') ? (
+                      <div>
+                        Your Google authorization session has expired or been revoked by Google.
+                        <br /><br />
+                        <strong>Fix:</strong> Click <strong>"Disconnect Account"</strong> below, then click <strong>"Connect with Google"</strong> to grant a fresh connection.
+                      </div>
+                    ) : error || (
                       <>
                         Vera couldn't find any verified profiles. Please ensure:
                         <ul style={{ paddingLeft: '20px', marginTop: '8px' }}>
@@ -482,7 +488,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                         </ul>
                       </>
                     )}
-                  </p>
+                  </div>
                 </div>
               )}
 
