@@ -1,20 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../lib/supabaseClient';
 
-export default function Login() {
+export default function Login({ initialReset = false }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(() => {
     const params = new URLSearchParams(window.location.search);
-    return params.get('signup') !== 'true';
+    return params.get('signup') !== 'true' && !initialReset;
   });
+  const [isResetFlow, setIsResetFlow] = useState(initialReset);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
   const { signIn, signUp, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const hash = window.location.hash || '';
+    if (isResetFlow || initialReset || params.get('reset') === 'true' || hash.includes('type=recovery')) {
+      document.title = 'Reset Password | ReplyVera';
+    } else if (!isLogin) {
+      document.title = 'Create Account | ReplyVera';
+    } else {
+      document.title = 'Sign In | ReplyVera';
+    }
+  }, [isLogin, isResetFlow, initialReset]);
 
   const handleForgotPassword = async () => {
     if (!email) {

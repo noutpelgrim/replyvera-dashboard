@@ -131,7 +131,7 @@ Founder | ReplyVera
   };
 
   const handleSendAllLeads = async () => {
-    const unsent = leads.filter(l => l.status === 'NEW' && l.email && l.email.includes('@') && !l.email.includes('leaflet@'));
+    const unsent = leads.filter(l => (l.status === 'NEW' || l.status === 'NEW_LEAD' || l.status === 'Not contacted' || !l.status || l.status === 'not_contacted') && l.email && l.email.includes('@') && !l.email.includes('leaflet@'));
     if (unsent.length === 0) {
       alert('No new valid prospects to email.');
       return;

@@ -5,7 +5,35 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>replyvera_dashboard</title>
+    <title>Dashboard | ReplyVera</title>
+    <meta name="description" content="AI-powered Google review management and automation dashboard." />
+    <meta property="og:title" content="Dashboard | ReplyVera" />
+    <meta property="og:description" content="AI-powered Google review management and automation dashboard." />
+    <script>
+      (function() {
+        try {
+          var p = window.location.pathname;
+          var s = new URLSearchParams(window.location.search);
+          var h = window.location.hash || '';
+          if (p.includes('/login') || p.includes('/reset-password')) {
+            if (p.includes('/reset-password') || s.get('reset') === 'true' || h.includes('type=recovery')) {
+              document.title = 'Reset Password | ReplyVera';
+            } else if (s.get('signup') === 'true') {
+              document.title = 'Create Account | ReplyVera';
+            } else {
+              document.title = 'Sign In | ReplyVera';
+            }
+          } else {
+            var tab = s.get('tab');
+            if (tab === 'settings') document.title = 'Settings | ReplyVera';
+            else if (tab === 'billing') document.title = 'Billing | ReplyVera';
+            else if (tab === 'analytics') document.title = 'Analytics | ReplyVera';
+            else if (tab === 'leads') document.title = 'Prospects | ReplyVera';
+            else document.title = 'Reviews | ReplyVera';
+          }
+        } catch(e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

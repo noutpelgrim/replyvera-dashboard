@@ -29,6 +29,27 @@ export default function Dashboard() {
   const [ratingFilter, setRatingFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
 
+  // Sync document title with active tab
+  useEffect(() => {
+    const titles = {
+      reviews: 'Reviews | ReplyVera',
+      settings: 'Settings | ReplyVera',
+      analytics: 'Analytics | ReplyVera',
+      leads: 'Prospects | ReplyVera',
+      billing: 'Billing | ReplyVera',
+    };
+    document.title = titles[activeTab] || 'Dashboard | ReplyVera';
+  }, [activeTab]);
+
+  // Read tab from query param if provided
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab && ['reviews', 'settings', 'analytics', 'leads', 'billing'].includes(tab)) {
+      setActiveTab(tab);
+    }
+  }, []);
+
   // 1. Fetch data on mount AND whenever refreshTrigger changes
   useEffect(() => {
     const fetchData = async () => {

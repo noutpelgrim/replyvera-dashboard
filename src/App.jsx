@@ -16,6 +16,7 @@ function App() {
         <Routes>
           {/* Public Route */}
           <Route path="/login" element={<Login />} />
+          <Route path="/reset-password" element={<Login initialReset={true} />} />
 
           {/* Protected Routes */}
           <Route path="/" element={<ProtectedRoute />}>
