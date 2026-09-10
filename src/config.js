@@ -4,8 +4,10 @@
  */
 
 const CONFIG = {
-  // Pull from VITE_API_BASE_URL in .env, fallback to live Render production backend
-  API_BASE: import.meta.env.VITE_API_BASE_URL || 'https://replyvera-backend-production.up.railway.app',
+  // Always point to active Railway production backend
+  API_BASE: (import.meta.env.VITE_API_BASE_URL && !import.meta.env.VITE_API_BASE_URL.includes('onrender'))
+    ? import.meta.env.VITE_API_BASE_URL
+    : 'https://replyvera-backend-production.up.railway.app',
   
   // Supabase
   SUPABASE_URL: import.meta.env.VITE_SUPABASE_URL,
