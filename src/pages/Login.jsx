@@ -98,14 +98,14 @@ export default function Login({ initialReset = false }) {
           <div style={{
             width: '44px',
             height: '44px',
-            background: 'linear-gradient(135deg, #6C47FF 0%, #00C9A7 100%)',
+            background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
             borderRadius: '12px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             fontSize: '1.2rem',
             color: '#fff',
-            boxShadow: '0 8px 24px rgba(108, 71, 255, 0.3)',
+            boxShadow: '0 8px 24px rgba(37, 99, 235, 0.35)',
             marginBottom: '16px'
           }}>
             <i className="fa-solid fa-reply"></i>
@@ -116,7 +116,7 @@ export default function Login({ initialReset = false }) {
             letterSpacing: '-0.03em',
             margin: 0
           }}>
-            Reply<span style={{ color: '#8B6FFF' }}>Vera</span>
+            Reply<span style={{ color: '#2563eb' }}>Vera</span>
           </h1>
           <p style={{ marginTop: '8px', color: '#8888AA', fontSize: '0.9rem' }}>
             {isLogin ? 'Sign in to your account' : 'Create your free account'}
@@ -138,7 +138,7 @@ export default function Login({ initialReset = false }) {
           <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
               <label style={{ fontSize: '13px', fontWeight: '600', color: '#8888AA' }}>Password</label>
-              {isLogin && <button type="button" onClick={handleForgotPassword} style={{ background: 'none', border: 'none', color: '#6C47FF', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>Forgot password?</button>}
+              {isLogin && <button type="button" onClick={handleForgotPassword} style={{ background: 'none', border: 'none', color: '#2563eb', fontSize: '12px', fontWeight: '600', cursor: 'pointer' }}>Forgot password?</button>}
             </div>
             <input 
               type="password" value={password} onChange={(e) => setPassword(e.target.value)}
@@ -149,9 +149,9 @@ export default function Login({ initialReset = false }) {
 
           <button type="submit" disabled={isLoading} style={{
             width: '100%', padding: '16px', borderRadius: '50px', border: 'none', 
-            background: 'linear-gradient(135deg, #6C47FF 0%, #00C9A7 100%)',
+            background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
             color: 'white', fontWeight: '800', fontSize: '1rem', cursor: 'pointer', marginTop: '10px', 
-            boxShadow: '0 8px 20px rgba(108, 71, 255, 0.25)',
+            boxShadow: '0 8px 20px rgba(37, 99, 235, 0.3)',
             opacity: isLoading ? 0.5 : 1
           }}>
             {isLoading ? 'Wait a second...' : (isLogin ? 'Sign In' : 'Get Started')}
@@ -187,7 +187,7 @@ export default function Login({ initialReset = false }) {
 
         <p style={{ textAlign: 'center', marginTop: '30px', fontSize: '14px', color: '#8888AA' }}>
           {isLogin ? "Don't have an account yet?" : "Already have an account?"} 
-          <button type="button" onClick={() => setIsLogin(!isLogin)} style={{ background: 'none', border: 'none', color: '#8B6FFF', fontWeight: '800', cursor: 'pointer', marginLeft: '8px' }}>
+          <button type="button" onClick={() => setIsLogin(!isLogin)} style={{ background: 'none', border: 'none', color: '#2563eb', fontWeight: '800', cursor: 'pointer', marginLeft: '8px' }}>
             {isLogin ? 'Sign Up' : 'Sign In'}
           </button>
         </p>

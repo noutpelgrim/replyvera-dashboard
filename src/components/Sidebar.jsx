@@ -89,14 +89,14 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
         <div style={{
           width: '34px',
           height: '34px',
-          background: 'linear-gradient(135deg, #6C47FF 0%, #00C9A7 100%)',
+          background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
           borderRadius: '10px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           fontSize: '0.9rem',
           color: '#fff',
-          boxShadow: '0 4px 15px rgba(108, 71, 255, 0.4)'
+          boxShadow: '0 4px 15px rgba(37, 99, 235, 0.4)'
         }}>
           <i className="fa-solid fa-reply"></i>
         </div>
@@ -106,7 +106,7 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
           letterSpacing: '-0.02em',
           color: '#F0F0FF'
         }}>
-          Reply<span style={{ color: '#8B6FFF' }}>Vera</span>
+          Reply<span style={{ color: '#2563eb' }}>Vera</span>
         </h2>
       </div>
 

@@ -1,8 +1,8 @@
 :root {
   /* Design Tokens - HSL Tailored Palette */
-  --primary: 252 100% 64%;   /* #6C47FF Purple */
-  --accent: 170 100% 39%;     /* #00C9A7 Teal */
-  --primary-glow: 252 100% 64% / 0.15;
+  --primary: 221 83% 53%;   /* #2563eb Electric Blue */
+  --accent: 217 91% 60%;    /* #3b82f6 Accent Blue */
+  --primary-glow: 221 83% 53% / 0.15;
   --bg-dark: 240 10% 4%;      /* Almost Black */
   --surface: 240 10% 7%;      /* Slightly lighter for cards */
   --text-main: 0 0% 100%;
@@ -106,14 +106,14 @@ input:focus, textarea:focus {
 }
 
 .btn-primary {
-  background: linear-gradient(90deg, #6C47FF, #00C9A7);
+  background: linear-gradient(90deg, #2563eb, #3b82f6);
   color: white;
-  box-shadow: 0 4px 15px rgba(108, 71, 255, 0.2);
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.25);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(108, 71, 255, 0.4);
+  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
 }
 
 .spin {
