@@ -219,8 +219,8 @@ export default function Dashboard() {
               gap: '16px',
               alignItems: 'center',
               justifyContent: 'space-between',
-              background: 'rgba(255,255,255,0.02)',
-              border: '1px solid rgba(255,255,255,0.06)'
+              background: '#ffffff',
+              border: '1px solid #e2e8f0'
             }}>
               {/* Search Box */}
               <div style={{ position: 'relative', flex: '1 1 240px' }}>
@@ -234,9 +234,9 @@ export default function Dashboard() {
                     width: '100%',
                     padding: '10px 12px 10px 38px',
                     borderRadius: '10px',
-                    background: 'rgba(0, 0, 0, 0.2)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    color: 'white',
+                    background: '#f8fafc',
+                    border: '1px solid #cbd5e1',
+                    color: '#0f172a',
                     fontSize: '0.85rem',
                     outline: 'none'
                   }}
@@ -254,28 +254,28 @@ export default function Dashboard() {
                     style={{
                       padding: '8px 12px',
                       borderRadius: '8px',
-                      background: 'rgba(0, 0, 0, 0.2)',
-                      border: '1px solid rgba(255,255,255,0.06)',
-                      color: 'white',
+                      background: '#f8fafc',
+                      border: '1px solid #cbd5e1',
+                      color: '#0f172a',
                       fontSize: '0.8rem',
                       fontWeight: '600',
                       outline: 'none',
                       cursor: 'pointer'
                     }}
                   >
-                    <option value="all">All Stars</option>
-                    <option value="5">5 Stars</option>
-                    <option value="4">4 Stars</option>
-                    <option value="3">3 Stars</option>
-                    <option value="2">2 Stars</option>
-                    <option value="1">1 Star</option>
+                    <option value="all" style={{ background: '#ffffff', color: '#0f172a' }}>All Stars</option>
+                    <option value="5" style={{ background: '#ffffff', color: '#0f172a' }}>5 Stars</option>
+                    <option value="4" style={{ background: '#ffffff', color: '#0f172a' }}>4 Stars</option>
+                    <option value="3" style={{ background: '#ffffff', color: '#0f172a' }}>3 Stars</option>
+                    <option value="2" style={{ background: '#ffffff', color: '#0f172a' }}>2 Stars</option>
+                    <option value="1" style={{ background: '#ffffff', color: '#0f172a' }}>1 Star</option>
                   </select>
                 </div>
 
                 {/* Status Filter */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <label style={{ fontSize: '0.75rem', fontWeight: '700', color: 'hsl(var(--text-muted))', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Status:</label>
-                  <div style={{ display: 'flex', background: 'rgba(0,0,0,0.2)', padding: '2px', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                  <div style={{ display: 'flex', background: '#f1f5f9', padding: '2px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
                     {['all', 'PENDING', 'PUBLISHED'].map(status => (
                       <button
                         key={status}

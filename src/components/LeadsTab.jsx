@@ -258,10 +258,10 @@ Founder | ReplyVera
     }
   };
 
-  if (loading) return <div style={{ color: 'white', padding: '20px' }}>Loading prospect database...</div>;
+  if (loading) return <div style={{ color: '#0f172a', padding: '20px' }}>Loading prospect database...</div>;
 
   return (
-    <div className="fade-in" style={{ color: 'white' }}>
+    <div className="fade-in" style={{ color: '#0f172a' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <div>
           <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>Prospect Manager &amp; Target Scanner</h2>
@@ -277,13 +277,13 @@ Founder | ReplyVera
             style={{
               padding: '8px 16px',
               borderRadius: '12px',
-              background: 'linear-gradient(135deg, #6C47FF 0%, #00C9A7 100%)',
+              background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
               color: 'white',
               fontSize: '0.85rem',
               fontWeight: '700',
               border: 'none',
               cursor: sending ? 'not-allowed' : 'pointer',
-              boxShadow: '0 4px 12px rgba(108, 71, 255, 0.3)',
+              boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
               marginRight: '8px'
             }}
           >
@@ -297,7 +297,7 @@ Founder | ReplyVera
               borderRadius: '12px',
               background: 'rgba(239, 68, 68, 0.15)',
               border: '1px solid rgba(239, 68, 68, 0.3)',
-              color: '#FCA5A5',
+              color: '#EF4444',
               fontSize: '0.85rem',
               fontWeight: '700',
               cursor: (clearing || leads.length === 0) ? 'not-allowed' : 'pointer',
@@ -311,7 +311,7 @@ Founder | ReplyVera
       </div>
 
       {/* Target Search & Scanner Control Panel */}
-      <div className="glass" style={{ padding: '24px', borderRadius: '20px', marginBottom: '30px', border: '1px solid rgba(108, 71, 255, 0.2)' }}>
+      <div className="glass" style={{ padding: '24px', borderRadius: '20px', marginBottom: '30px', background: '#ffffff', border: '1px solid #e2e8f0' }}>
         <h3 style={{ fontSize: '1.1rem', fontWeight: '700', marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span>🔍</span> Search New Target Industry &amp; Location
         </h3>
@@ -327,9 +327,9 @@ Founder | ReplyVera
               style={{
                 padding: '12px 14px',
                 borderRadius: '10px',
-                background: 'rgba(0, 0, 0, 0.3)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'white',
+                background: '#ffffff',
+                border: '1px solid #cbd5e1',
+                color: '#0f172a',
                 fontSize: '0.9rem',
                 outline: 'none'
               }}
@@ -347,9 +347,9 @@ Founder | ReplyVera
               style={{
                 padding: '12px 14px',
                 borderRadius: '10px',
-                background: 'rgba(0, 0, 0, 0.3)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'white',
+                background: '#ffffff',
+                border: '1px solid #cbd5e1',
+                color: '#0f172a',
                 fontSize: '0.9rem',
                 outline: 'none'
               }}
@@ -364,17 +364,17 @@ Founder | ReplyVera
               style={{
                 padding: '12px 14px',
                 borderRadius: '10px',
-                background: 'rgba(0, 0, 0, 0.3)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'white',
+                background: '#ffffff',
+                border: '1px solid #cbd5e1',
+                color: '#0f172a',
                 fontSize: '0.9rem',
                 outline: 'none',
                 cursor: 'pointer'
               }}
             >
-              <option value="all" style={{ background: '#1A1A32', color: 'white' }}>🌐 All Ratings (1.0★ - 5.0★)</option>
-              <option value="low" style={{ background: '#1A1A32', color: 'white' }}>🚨 Low Rated / Crisis (Under 4.0★)</option>
-              <option value="high" style={{ background: '#1A1A32', color: 'white' }}>⭐ High Rated / Top (4.0★ - 5.0★)</option>
+              <option value="all" style={{ background: '#ffffff', color: '#0f172a' }}>🌐 All Ratings (1.0★ - 5.0★)</option>
+              <option value="low" style={{ background: '#ffffff', color: '#0f172a' }}>🚨 Low Rated / Crisis (Under 4.0★)</option>
+              <option value="high" style={{ background: '#ffffff', color: '#0f172a' }}>⭐ High Rated / Top (4.0★ - 5.0★)</option>
             </select>
           </div>
 
@@ -384,13 +384,13 @@ Founder | ReplyVera
             style={{
               padding: '12px 24px',
               borderRadius: '10px',
-              background: 'linear-gradient(135deg, #6C47FF 0%, #00C9A7 100%)',
+              background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
               color: 'white',
               fontWeight: '700',
               border: 'none',
               cursor: scanning ? 'not-allowed' : 'pointer',
               opacity: scanning ? 0.6 : 1,
-              boxShadow: '0 4px 15px rgba(108, 71, 255, 0.3)',
+              boxShadow: '0 4px 15px rgba(37, 99, 235, 0.3)',
               height: '45px',
               whiteSpace: 'nowrap'
             }}
@@ -404,9 +404,9 @@ Founder | ReplyVera
             marginTop: '16px',
             padding: '10px 14px',
             borderRadius: '10px',
-            background: 'rgba(108, 71, 255, 0.1)',
-            border: '1px solid rgba(108, 71, 255, 0.25)',
-            color: '#A78BFA',
+            background: 'rgba(37, 99, 235, 0.08)',
+            border: '1px solid rgba(37, 99, 235, 0.25)',
+            color: '#2563eb',
             fontSize: '0.85rem',
             fontWeight: '600',
             display: 'flex',
@@ -444,9 +444,9 @@ Founder | ReplyVera
                     onClick={(e) => handleEditLeadEmail(lead.id, e)}
                     title="Edit email address"
                     style={{
-                      background: 'rgba(108, 71, 255, 0.15)',
-                      border: '1px solid rgba(108, 71, 255, 0.3)',
-                      color: '#A78BFA',
+                      background: 'rgba(37, 99, 235, 0.1)',
+                      border: '1px solid rgba(37, 99, 235, 0.25)',
+                      color: '#2563eb',
                       padding: '4px 8px',
                       borderRadius: '6px',
                       fontSize: '0.75rem',
@@ -461,7 +461,7 @@ Founder | ReplyVera
                     style={{
                       background: 'rgba(239, 68, 68, 0.12)',
                       border: '1px solid rgba(239, 68, 68, 0.3)',
-                      color: '#FCA5A5',
+                      color: '#EF4444',
                       padding: '4px 8px',
                       borderRadius: '6px',
                       fontSize: '0.75rem',
@@ -500,14 +500,14 @@ Founder | ReplyVera
                 onChange={(e) => setEditedDraft(e.target.value)}
                 style={{ 
                   width: '100%',
-                  background: 'rgba(0,0,0,0.3)', 
+                  background: '#f8fafc', 
                   padding: '24px', 
                   borderRadius: '12px', 
                   fontSize: '0.95rem',
                   lineHeight: '1.6',
                   minHeight: '300px',
-                  color: 'white',
-                  border: '1px solid hsl(var(--border))',
+                  color: '#0f172a',
+                  border: '1px solid #cbd5e1',
                   outline: 'none',
                   fontFamily: 'inherit',
                   resize: 'vertical'
@@ -538,9 +538,10 @@ Founder | ReplyVera
       </div>
 
       <style>{`
-        .glass-card:hover { transform: translateY(-2px); background: rgba(255,255,255,0.08); }
-        .active-card { background: rgba(108, 71, 255, 0.1) !important; border-color: hsl(var(--primary)) !important; }
-        .badge { background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; font-weight: 700; }
+        .glass-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; }
+        .glass-card:hover { transform: translateY(-2px); background: #f8fafc; }
+        .active-card { background: rgba(37, 99, 235, 0.05) !important; border-color: hsl(var(--primary)) !important; }
+        .badge { background: #f1f5f9; color: #475569; padding: 2px 8px; border-radius: 4px; font-weight: 700; }
       `}</style>
     </div>
   );

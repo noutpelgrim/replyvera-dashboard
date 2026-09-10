@@ -23,7 +23,7 @@ const AnalyticsTab = () => {
       });
   }, [user?.email]);
 
-  if (loading) return <div style={{ color: 'white', padding: '20px' }}>Analyzing business performance...</div>;
+  if (loading) return <div style={{ color: '#0f172a', padding: '20px' }}>Analyzing business performance...</div>;
   if (!stats || stats.error) return <div style={{ color: '#ff4d4d', padding: '20px' }}>Failed to load analytics: {stats?.error || 'Unknown error'}</div>;
 
   const MetricCard = ({ title, value, subtext, icon }) => (
@@ -89,7 +89,7 @@ const AnalyticsTab = () => {
   };
 
   return (
-    <div className="fade-in" style={{ color: 'white' }}>
+    <div className="fade-in" style={{ color: '#0f172a' }}>
       <div style={{ marginBottom: '30px' }}>
         <h2 style={{ fontSize: '1.8rem', fontWeight: '800' }}>Business Intelligence</h2>
         <p style={{ color: 'hsl(var(--text-muted))' }}>Visualize your reputation performance and ROI.</p>
@@ -168,7 +168,7 @@ const AnalyticsTab = () => {
                     y1={y} 
                     x2={chartWidth - paddingRight} 
                     y2={y} 
-                    stroke="rgba(255,255,255,0.06)" 
+                    stroke="rgba(0,0,0,0.06)" 
                     strokeWidth="1" 
                     strokeDasharray={tick === 0 ? "0" : "5,5"}
                   />
@@ -210,8 +210,8 @@ const AnalyticsTab = () => {
             {/* Data point indicators */}
             {hoverIndex !== null && pointsTotal[hoverIndex] && (
               <g>
-                <circle cx={pointsTotal[hoverIndex].x} cy={pointsTotal[hoverIndex].y} r="6" fill="#00C9A7" stroke="rgba(255,255,255,0.2)" strokeWidth="4" />
-                <circle cx={pointsReplies[hoverIndex].x} cy={pointsReplies[hoverIndex].y} r="6" fill="#8B6FFF" stroke="rgba(255,255,255,0.2)" strokeWidth="4" />
+                <circle cx={pointsTotal[hoverIndex].x} cy={pointsTotal[hoverIndex].y} r="6" fill="#00C9A7" stroke="rgba(255,255,255,0.8)" strokeWidth="4" />
+                <circle cx={pointsReplies[hoverIndex].x} cy={pointsReplies[hoverIndex].y} r="6" fill="#8B6FFF" stroke="rgba(255,255,255,0.8)" strokeWidth="4" />
               </g>
             )}
 
@@ -263,18 +263,18 @@ const AnalyticsTab = () => {
               transform: 'translateX(-50%)',
               padding: '12px 16px',
               borderRadius: '8px',
-              border: '1px solid hsl(var(--primary) / 0.3)',
-              background: 'rgba(10,10,20,0.95)',
+              border: '1px solid #e2e8f0',
+              background: 'rgba(255,255,255,0.95)',
               zIndex: 10,
               pointerEvents: 'none',
-              boxShadow: '0 8px 30px rgba(0,0,0,0.6)',
+              boxShadow: '0 8px 30px rgba(0,0,0,0.08)',
               fontSize: '0.8rem',
               display: 'flex',
               flexDirection: 'column',
               gap: '6px',
               minWidth: '150px'
             }}>
-              <div style={{ fontWeight: '800', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '4px', marginBottom: '2px' }}>
+              <div style={{ fontWeight: '800', borderBottom: '1px solid #e2e8f0', paddingBottom: '4px', marginBottom: '2px', color: '#0f172a' }}>
                 {formatDate(history[hoverIndex].date)}
               </div>
               <div style={{ display: 'flex', justifyContent: 'space-between', gap: '12px' }}>
@@ -302,7 +302,7 @@ const AnalyticsTab = () => {
                 <div style={{ 
                   flex: 1, 
                   height: '8px', 
-                  background: 'rgba(255,255,255,0.05)', 
+                  background: '#f1f5f9', 
                   borderRadius: '4px',
                   overflow: 'hidden'
                 }}>

@@ -1,17 +1,17 @@
 :root {
-  /* Design Tokens - HSL Tailored Palette */
+  /* Design Tokens - Light Theme Palette */
   --primary: 221 83% 53%;   /* #2563eb Electric Blue */
   --accent: 217 91% 60%;    /* #3b82f6 Accent Blue */
   --primary-glow: 221 83% 53% / 0.15;
-  --bg-dark: 240 10% 4%;      /* Almost Black */
-  --surface: 240 10% 7%;      /* Slightly lighter for cards */
-  --text-main: 0 0% 100%;
-  --text-muted: 240 5% 70%;
-  --border: 240 5% 15%;
+  --bg-dark: 210 40% 98%;     /* Soft Light Background #f8fafc */
+  --surface: 0 0% 100%;       /* Pure White for cards #ffffff */
+  --text-main: 222 47% 11%;   /* Dark Slate #0f172a */
+  --text-muted: 215 16% 47%;  /* Muted Slate #64748b */
+  --border: 214 32% 91%;      /* Subtle Light Border #e2e8f0 */
   --success: 142 70% 45%;
   --danger: 0 70% 55%;
-  --glass: rgba(255, 255, 255, 0.03);
-  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass: rgba(255, 255, 255, 0.9);
+  --glass-border: rgba(226, 232, 240, 0.9);
 
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   line-height: 1.5;
@@ -36,8 +36,8 @@ body {
   min-height: 100vh;
   margin: 0;
   display: flex;
-  background: radial-gradient(circle at 0% 0%, hsl(var(--primary) / 0.05) 0%, transparent 50%),
-              radial-gradient(circle at 100% 100%, hsl(var(--primary) / 0.05) 0%, transparent 50%),
+  background: radial-gradient(circle at 0% 0%, hsl(var(--primary) / 0.03) 0%, transparent 50%),
+              radial-gradient(circle at 100% 100%, hsl(var(--primary) / 0.03) 0%, transparent 50%),
               hsl(var(--bg-dark));
 }
 
@@ -55,7 +55,7 @@ body {
 }
 
 .card-shadow {
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
 }
 
 /* Animations */
@@ -79,9 +79,9 @@ button:active {
 }
 
 input, textarea {
-  background: hsl(var(--bg-dark));
+  background: #ffffff;
   border: 1px solid hsl(var(--border));
-  color: white;
+  color: hsl(var(--text-main));
   border-radius: 8px;
   padding: 10px;
   outline: none;

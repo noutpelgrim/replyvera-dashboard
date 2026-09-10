@@ -65,9 +65,9 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
       case 'starter':
       default:
         return {
-          bg: 'rgba(255, 255, 255, 0.03)', // Grey
-          border: 'rgba(255, 255, 255, 0.06)',
-          color: '#94A3B8',
+          bg: 'rgba(0, 0, 0, 0.03)', // Light Grey
+          border: 'rgba(0, 0, 0, 0.08)',
+          color: '#64748b',
           name: plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : 'Starter'
         };
     }
@@ -104,7 +104,7 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
           fontSize: '1.4rem', 
           fontWeight: '800', 
           letterSpacing: '-0.02em',
-          color: '#F0F0FF'
+          color: '#0f172a'
         }}>
           Reply<span style={{ color: '#2563eb' }}>Vera</span>
         </h2>
@@ -126,9 +126,9 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
               width: '100%',
               padding: '10px 12px',
               borderRadius: '10px',
-              background: 'rgba(255,255,255,0.05)',
-              border: '1px solid rgba(255,255,255,0.1)',
-              color: 'white',
+              background: '#ffffff',
+              border: '1px solid #e2e8f0',
+              color: '#0f172a',
               fontSize: '0.85rem',
               fontWeight: '600',
               outline: 'none',
@@ -136,7 +136,7 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
             }}
           >
             {locations.map(loc => (
-              <option key={loc.name} value={loc.name} style={{ background: '#1A1A32', color: 'white' }}>
+              <option key={loc.name} value={loc.name} style={{ background: '#ffffff', color: '#0f172a' }}>
                 {loc.title}
               </option>
             ))}
@@ -194,7 +194,7 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
         <div className="glass" style={{ padding: '16px', fontSize: '0.8rem', color: 'hsl(var(--text-muted))', overflow: 'hidden' }}>
           <p>Logged in as</p>
           <p style={{ 
-            color: 'white', 
+            color: '#0f172a', 
             fontWeight: '600', 
             marginTop: '4px', 
             textOverflow: 'ellipsis', 

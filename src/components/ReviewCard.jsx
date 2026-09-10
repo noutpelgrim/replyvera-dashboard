@@ -130,7 +130,8 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
 
       <div className="glass" style={{
         padding: '20px',
-        background: 'rgba(0,0,0,0.2)',
+        background: '#f8fafc',
+        border: '1px solid #e2e8f0',
         borderRadius: '12px'
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
@@ -147,10 +148,10 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
           <textarea
             value={draft}
             onChange={(e) => setDraft(e.target.value)}
-            style={{ width: '100%', minHeight: '80px', fontSize: '0.9rem', color: 'white' }}
+            style={{ width: '100%', minHeight: '80px', fontSize: '0.9rem', color: '#0f172a', background: '#ffffff', border: '1px solid #cbd5e1' }}
           />
         ) : (
-          <p style={{ fontSize: '0.9rem', lineHeight: '1.6' }}>{draft}</p>
+          <p style={{ fontSize: '0.9rem', lineHeight: '1.6', color: '#0f172a' }}>{draft}</p>
         )}
       </div>
 

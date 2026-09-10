@@ -251,7 +251,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
         <div style={{ display: 'grid', gap: '24px' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <label style={{ fontSize: '0.9rem', fontWeight: '600' }}>Brand Tone</label>
-            <div style={{ display: 'flex', gap: '8px', background: 'hsl(var(--bg-dark))', padding: '4px', borderRadius: '12px', border: '1px solid hsl(var(--border))' }}>
+            <div style={{ display: 'flex', gap: '8px', background: '#f1f5f9', padding: '4px', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
               {tones.map(tone => (
                 <button
                   key={tone}
@@ -281,24 +281,24 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                 width: '100%',
                 padding: '10px 12px',
                 borderRadius: '12px',
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'white',
+                background: '#ffffff',
+                border: '1px solid #cbd5e1',
+                color: '#0f172a',
                 fontSize: '0.85rem',
                 fontWeight: '600',
                 outline: 'none',
                 cursor: 'pointer'
               }}
             >
-              <option value="auto" style={{ background: '#1A1A32', color: 'white' }}>Auto-Detect (Reply in customer's language)</option>
-              <option value="en" style={{ background: '#1A1A32', color: 'white' }}>Always English</option>
-              <option value="nl" style={{ background: '#1A1A32', color: 'white' }}>Always Dutch (Nederlands)</option>
-              <option value="es" style={{ background: '#1A1A32', color: 'white' }}>Always Spanish (Español)</option>
-              <option value="de" style={{ background: '#1A1A32', color: 'white' }}>Always German (Deutsch)</option>
-              <option value="fr" style={{ background: '#1A1A32', color: 'white' }}>Always French (Français)</option>
-              <option value="it" style={{ background: '#1A1A32', color: 'white' }}>Always Italian (Italiano)</option>
-              <option value="pt" style={{ background: '#1A1A32', color: 'white' }}>Always Portuguese (Português)</option>
-              <option value="zh" style={{ background: '#1A1A32', color: 'white' }}>Always Mandarin Chinese (中文)</option>
+              <option value="auto" style={{ background: '#ffffff', color: '#0f172a' }}>Auto-Detect (Reply in customer's language)</option>
+              <option value="en" style={{ background: '#ffffff', color: '#0f172a' }}>Always English</option>
+              <option value="nl" style={{ background: '#ffffff', color: '#0f172a' }}>Always Dutch (Nederlands)</option>
+              <option value="es" style={{ background: '#ffffff', color: '#0f172a' }}>Always Spanish (Español)</option>
+              <option value="de" style={{ background: '#ffffff', color: '#0f172a' }}>Always German (Deutsch)</option>
+              <option value="fr" style={{ background: '#ffffff', color: '#0f172a' }}>Always French (Français)</option>
+              <option value="it" style={{ background: '#ffffff', color: '#0f172a' }}>Always Italian (Italiano)</option>
+              <option value="pt" style={{ background: '#ffffff', color: '#0f172a' }}>Always Portuguese (Português)</option>
+              <option value="zh" style={{ background: '#ffffff', color: '#0f172a' }}>Always Mandarin Chinese (中文)</option>
             </select>
           </div>
 
@@ -310,7 +310,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               max="5"
               value={settings.minRating}
               onChange={(e) => setSettings({ ...settings, minRating: parseInt(e.target.value) })}
-              style={{ width: '80px', padding: '8px', borderRadius: '8px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+              style={{ width: '80px', padding: '8px', borderRadius: '8px', background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
             />
           </div>
 
@@ -320,7 +320,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               placeholder="e.g. Never mention discounts, always invite them back for Friday live music..."
               value={settings.instructions}
               onChange={(e) => setSettings({ ...settings, instructions: e.target.value })}
-              style={{ width: '100%', minHeight: '120px', padding: '12px', borderRadius: '12px', background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: 'white' }}
+              style={{ width: '100%', minHeight: '120px', padding: '12px', borderRadius: '12px', background: '#ffffff', border: '1px solid #cbd5e1', color: '#0f172a' }}
             />
           </div>
 
@@ -343,7 +343,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           <div style={{
             marginTop: '24px',
             paddingTop: '24px',
-            borderTop: '1px solid rgba(255,255,255,0.08)',
+            borderTop: '1px solid #e2e8f0',
             display: 'flex',
             flexDirection: 'column',
             gap: '16px'
@@ -364,7 +364,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   value={previewReview}
                   onChange={(e) => setPreviewReview(e.target.value)}
                   placeholder="Type a sample customer review here..."
-                  style={{ width: '100%', minHeight: '60px', padding: '10px', fontSize: '0.85rem', borderRadius: '8px', background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.06)', color: 'white' }}
+                  style={{ width: '100%', minHeight: '60px', padding: '10px', fontSize: '0.85rem', borderRadius: '8px', background: '#f8fafc', border: '1px solid #cbd5e1', color: '#0f172a' }}
                 />
               </div>
               
@@ -376,9 +376,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   style={{
                     padding: '10px 12px',
                     borderRadius: '8px',
-                    background: 'rgba(0, 0, 0, 0.2)',
-                    border: '1px solid rgba(255,255,255,0.06)',
-                    color: 'white',
+                    background: '#ffffff',
+                    border: '1px solid #cbd5e1',
+                    color: '#0f172a',
                     fontSize: '0.85rem',
                     fontWeight: '600',
                     outline: 'none',
@@ -386,11 +386,11 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                     height: '42px'
                   }}
                 >
-                  <option value="5" style={{ background: '#1A1A32', color: 'white' }}>⭐⭐⭐⭐⭐ (5)</option>
-                  <option value="4" style={{ background: '#1A1A32', color: 'white' }}>⭐⭐⭐⭐ (4)</option>
-                  <option value="3" style={{ background: '#1A1A32', color: 'white' }}>⭐⭐⭐ (3)</option>
-                  <option value="2" style={{ background: '#1A1A32', color: 'white' }}>⭐⭐ (2)</option>
-                  <option value="1" style={{ background: '#1A1A32', color: 'white' }}>⭐ (1)</option>
+                  <option value="5" style={{ background: '#ffffff', color: '#0f172a' }}>⭐⭐⭐⭐⭐ (5)</option>
+                  <option value="4" style={{ background: '#ffffff', color: '#0f172a' }}>⭐⭐⭐⭐ (4)</option>
+                  <option value="3" style={{ background: '#ffffff', color: '#0f172a' }}>⭐⭐⭐ (3)</option>
+                  <option value="2" style={{ background: '#ffffff', color: '#0f172a' }}>⭐⭐ (2)</option>
+                  <option value="1" style={{ background: '#ffffff', color: '#0f172a' }}>⭐ (1)</option>
                 </select>
               </div>
             </div>
@@ -401,9 +401,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               style={{
                 padding: '10px',
                 borderRadius: '8px',
-                background: 'rgba(255,255,255,0.05)',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'white',
+                background: '#f1f5f9',
+                border: '1px solid #e2e8f0',
+                color: '#0f172a',
                 fontSize: '0.85rem',
                 fontWeight: '600',
                 opacity: (loadingPreview || !previewReview.trim()) ? 0.5 : 1,
@@ -416,12 +416,12 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
             {previewResult && (
               <div style={{
                 padding: '16px',
-                background: 'rgba(108, 71, 255, 0.05)',
-                border: '1px solid rgba(108, 71, 255, 0.2)',
+                background: 'rgba(37, 99, 235, 0.05)',
+                border: '1px solid rgba(37, 99, 235, 0.2)',
                 borderRadius: '10px',
                 fontSize: '0.85rem',
                 lineHeight: '1.5',
-                color: '#E0E0FF'
+                color: '#0f172a'
               }}>
                 <div style={{ fontSize: '0.7rem', fontWeight: '700', color: 'hsl(var(--primary))', marginBottom: '6px', textTransform: 'uppercase' }}>
                   Vera's Draft Response
@@ -440,7 +440,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           <p style={{ color: 'hsl(var(--text-muted))' }}>Link your business profiles to enable live review management.</p>
         </div>
 
-        <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+        <div className="glass-card" style={{ padding: '24px', borderRadius: '20px', background: '#ffffff', border: '1px solid #e2e8f0' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px' }}>
             <div style={{ width: '48px', height: '48px', background: '#4285F4', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
@@ -461,17 +461,17 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           {isConnected ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
               {locations.length > 0 ? (
-                <div style={{ padding: '16px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <div style={{ padding: '16px', background: '#f8fafc', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
                   <label style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))', display: 'block', marginBottom: '4px' }}>Managing Location</label>
-                  <div style={{ fontWeight: '600' }}>{locations[0].title}</div>
+                  <div style={{ fontWeight: '600', color: '#0f172a' }}>{locations[0].title}</div>
                   <div style={{ fontSize: '0.75rem', color: 'hsl(var(--text-muted))' }}>{locations[0].name}</div>
                 </div>
               ) : (
                 <div style={{ padding: '20px', background: error ? 'rgba(255,68,68,0.05)' : 'rgba(255,165,0,0.05)', border: error ? '1px solid rgba(255,68,68,0.2)' : '1px solid rgba(255,165,0,0.2)', borderRadius: '16px', fontSize: '0.85rem' }}>
-                  <div style={{ color: error ? '#ff4d4d' : '#FFA500', fontWeight: '700', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <div style={{ color: error ? '#ff4d4d' : '#d97706', fontWeight: '700', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
                     {error?.includes('invalid_grant') ? '🔑 Google Authorization Expired' : error?.includes('Quota exceeded') || error?.includes('quota') ? '⏳ Google API Rate Limit Reached' : error ? '❌ API Error' : '⚠️ No locations found'}
                   </div>
-                  <div style={{ color: 'rgba(255,255,255,0.7)', lineHeight: '1.5' }}>
+                  <div style={{ color: 'rgba(15,23,42,0.8)', lineHeight: '1.5' }}>
                     {error?.includes('invalid_grant') ? (
                       <div>
                         Your Google authorization session has expired or been revoked by Google.
@@ -527,9 +527,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   width: '100%', 
                   padding: '12px', 
                   borderRadius: '12px', 
-                  background: 'rgba(255,255,255,0.05)',
-                  border: '1px solid rgba(255,255,255,0.1)', 
-                  color: 'rgba(255,255,255,0.6)', 
+                  background: '#f1f5f9',
+                  border: '1px solid #e2e8f0', 
+                  color: '#64748b', 
                   fontSize: '0.85rem',
                   fontWeight: '600',
                   cursor: 'pointer',
@@ -563,14 +563,14 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               
               <div style={{
                 padding: '16px',
-                background: 'rgba(255,255,255,0.02)',
-                border: '1px solid rgba(255,255,255,0.06)',
+                background: '#f8fafc',
+                border: '1px solid #e2e8f0',
                 borderRadius: '12px',
                 fontSize: '0.8rem',
                 color: 'hsl(var(--text-muted))',
                 lineHeight: '1.4'
               }}>
-                <div style={{ fontWeight: '700', color: 'white', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ fontWeight: '700', color: '#0f172a', marginBottom: '6px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <span>🔒</span> Waarom vraagt Google om beheer- en verwijderrechten?
                 </div>
                 Google bundelt alle review- en profielrechten in één standaardpakket genaamd <i>'Business Profile Management'</i>. ReplyVera gebruikt dit <b>uitsluitend</b> om je reviews in te laden en antwoorden te kunnen plaatsen. Wij zullen nooit wijzigingen aanbrengen in je bedrijfsinformatie of je listings verwijderen.
@@ -583,8 +583,8 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
         <div className="glass-card" style={{
           padding: '24px',
           borderRadius: '20px',
-          background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(255,255,255,0.05)',
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
           position: 'relative',
           overflow: 'hidden'
         }}>
@@ -601,7 +601,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   </span>
                 )}
               </div>
-              <p style={{ fontSize: '0.85rem', color: facebookRequested ? '#00C9A7' : '#FFB800' }}>
+              <p style={{ fontSize: '0.85rem', color: facebookRequested ? '#00C9A7' : '#d97706' }}>
                 {facebookRequested ? '✓ Interest registered' : '● Coming soon'}
               </p>
             </div>
@@ -613,9 +613,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               width: '100%', 
               padding: '12px', 
               borderRadius: '12px', 
-              background: tier === 'starter' ? 'rgba(255,255,255,0.03)' : facebookRequested ? 'rgba(255,255,255,0.05)' : '#1877F2', 
-              color: tier === 'starter' ? 'rgba(255,255,255,0.3)' : facebookRequested ? 'rgba(255,255,255,0.5)' : 'white',
-              border: (tier === 'starter' || facebookRequested) ? '1px solid rgba(255,255,255,0.1)' : 'none',
+              background: (tier === 'starter' || facebookRequested) ? '#f1f5f9' : '#1877F2', 
+              color: (tier === 'starter' || facebookRequested) ? '#94a3b8' : 'white',
+              border: (tier === 'starter' || facebookRequested) ? '1px solid #e2e8f0' : 'none',
               fontWeight: '600',
               cursor: tier === 'starter' ? 'not-allowed' : facebookRequested ? 'default' : 'pointer',
               outline: 'none'
@@ -629,8 +629,8 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
         <div className="glass-card" style={{
           padding: '24px',
           borderRadius: '20px',
-          background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(255,255,255,0.05)',
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
           position: 'relative',
           overflow: 'hidden'
         }}>
@@ -647,7 +647,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   </span>
                 )}
               </div>
-              <p style={{ fontSize: '0.85rem', color: trustpilotRequested ? '#00C9A7' : '#FFB800' }}>
+              <p style={{ fontSize: '0.85rem', color: trustpilotRequested ? '#00C9A7' : '#d97706' }}>
                 {trustpilotRequested ? '✓ Interest registered' : '● Coming soon'}
               </p>
             </div>
@@ -659,9 +659,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               width: '100%', 
               padding: '12px', 
               borderRadius: '12px', 
-              background: tier === 'starter' ? 'rgba(255,255,255,0.03)' : trustpilotRequested ? 'rgba(255,255,255,0.05)' : '#00B67A', 
-              color: tier === 'starter' ? 'rgba(255,255,255,0.3)' : trustpilotRequested ? 'rgba(255,255,255,0.5)' : 'white',
-              border: (tier === 'starter' || trustpilotRequested) ? '1px solid rgba(255,255,255,0.1)' : 'none',
+              background: (tier === 'starter' || trustpilotRequested) ? '#f1f5f9' : '#00B67A', 
+              color: (tier === 'starter' || trustpilotRequested) ? '#94a3b8' : 'white',
+              border: (tier === 'starter' || trustpilotRequested) ? '1px solid #e2e8f0' : 'none',
               fontWeight: '600',
               cursor: tier === 'starter' ? 'not-allowed' : trustpilotRequested ? 'default' : 'pointer',
               outline: 'none'
@@ -675,8 +675,8 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
         <div className="glass-card" style={{
           padding: '24px',
           borderRadius: '20px',
-          background: 'rgba(255,255,255,0.03)',
-          border: '1px solid rgba(255,255,255,0.05)',
+          background: '#ffffff',
+          border: '1px solid #e2e8f0',
           display: 'flex',
           flexDirection: 'column',
           gap: '18px'
@@ -693,8 +693,8 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           <div style={{
             padding: '10px 14px',
             borderRadius: '10px',
-            background: 'rgba(255, 255, 255, 0.03)',
-            border: '1px solid rgba(255, 255, 255, 0.08)',
+            background: '#f8fafc',
+            border: '1px solid #e2e8f0',
             display: 'flex',
             alignItems: 'center',
             gap: '10px'
@@ -702,7 +702,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
             <span style={{ fontSize: '0.9rem' }}>👤</span>
             <div style={{ overflow: 'hidden' }}>
               <div style={{ fontSize: '0.7rem', color: 'hsl(var(--text-muted))', fontWeight: '700', textTransform: 'uppercase' }}>Active User</div>
-              <div style={{ fontSize: '0.85rem', fontWeight: '600', color: 'white', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+              <div style={{ fontSize: '0.85rem', fontWeight: '600', color: '#0f172a', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
                 {user?.email || 'Guest User'}
               </div>
             </div>
@@ -710,7 +710,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
 
           <form onSubmit={handlePasswordChange} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             <div>
-              <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#E0E0FF', display: 'block', marginBottom: '6px' }}>New Password</label>
+              <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#475569', display: 'block', marginBottom: '6px' }}>New Password</label>
               <input
                 type="password"
                 placeholder="Enter new password (min. 6 chars)"
@@ -720,9 +720,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   width: '100%',
                   padding: '10px 12px',
                   borderRadius: '8px',
-                  background: 'rgba(0, 0, 0, 0.3)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  color: 'white',
+                  background: '#ffffff',
+                  border: '1px solid #cbd5e1',
+                  color: '#0f172a',
                   fontSize: '0.85rem',
                   outline: 'none'
                 }}
@@ -730,7 +730,7 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
             </div>
 
             <div>
-              <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#E0E0FF', display: 'block', marginBottom: '6px' }}>Confirm Password</label>
+              <label style={{ fontSize: '0.8rem', fontWeight: '600', color: '#475569', display: 'block', marginBottom: '6px' }}>Confirm Password</label>
               <input
                 type="password"
                 placeholder="Re-enter new password"
@@ -740,9 +740,9 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
                   width: '100%',
                   padding: '10px 12px',
                   borderRadius: '8px',
-                  background: 'rgba(0, 0, 0, 0.3)',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
-                  color: 'white',
+                  background: '#ffffff',
+                  border: '1px solid #cbd5e1',
+                  color: '#0f172a',
                   fontSize: '0.85rem',
                   outline: 'none'
                 }}
@@ -769,14 +769,14 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
               style={{
                 padding: '12px',
                 borderRadius: '10px',
-                background: 'linear-gradient(135deg, #6C47FF 0%, #00C9A7 100%)',
+                background: 'linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%)',
                 color: 'white',
                 fontWeight: '700',
                 fontSize: '0.85rem',
                 border: 'none',
                 cursor: updatingPassword ? 'not-allowed' : 'pointer',
                 opacity: updatingPassword ? 0.6 : 1,
-                boxShadow: '0 4px 15px rgba(108, 71, 255, 0.3)'
+                boxShadow: '0 4px 15px rgba(37, 99, 235, 0.3)'
               }}
             >
               {updatingPassword ? 'Updating...' : 'Update Password'}
@@ -791,17 +791,17 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
           top: '24px',
           right: '24px',
           zIndex: 999999,
-          background: 'rgba(30, 30, 46, 0.85)',
+          background: 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(20px)',
           WebkitBackdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
+          border: '1px solid #e2e8f0',
           borderRadius: '16px',
           padding: '16px 24px',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.6)',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.1)',
           display: 'flex',
           alignItems: 'center',
           gap: '16px',
-          color: 'white',
+          color: '#0f172a',
           animation: 'slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards',
           maxWidth: '380px'
         }}>
@@ -821,8 +821,8 @@ const SettingsPanel = ({ settings, setSettings, onSave }) => {
             ✓
           </div>
           <div>
-            <div style={{ fontWeight: '700', fontSize: '0.9rem', color: 'white' }}>Request Registered</div>
-            <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.7)', marginTop: '2px', lineHeight: '1.4' }}>{notification}</div>
+            <div style={{ fontWeight: '700', fontSize: '0.9rem', color: '#0f172a' }}>Request Registered</div>
+            <div style={{ fontSize: '0.8rem', color: '#64748b', marginTop: '2px', lineHeight: '1.4' }}>{notification}</div>
           </div>
         </div>,
         document.body
