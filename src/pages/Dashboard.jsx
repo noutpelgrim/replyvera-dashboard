@@ -41,14 +41,18 @@ export default function Dashboard() {
     document.title = titles[activeTab] || 'Dashboard | ReplyVera';
   }, [activeTab]);
 
+  const isAdmin = user?.email === 'noutpelgrim@hotmail.com' || user?.user_metadata?.role === 'admin' || user?.app_metadata?.role === 'admin';
+
   // Read tab from query param if provided
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get('tab');
-    if (tab && ['reviews', 'settings', 'analytics', 'leads', 'billing'].includes(tab)) {
+    if (tab === 'leads' && !isAdmin) {
+      setActiveTab('reviews');
+    } else if (tab && ['reviews', 'settings', 'analytics', 'leads', 'billing'].includes(tab)) {
       setActiveTab(tab);
     }
-  }, []);
+  }, [isAdmin]);
 
   // 1. Fetch data on mount AND whenever refreshTrigger changes
   useEffect(() => {

@@ -19,7 +19,7 @@ const Sidebar = ({ activeTab, setActiveTab, locations, selectedLocation, setSele
       .catch(err => console.error('Failed to fetch user tier:', err));
   }, [user?.email]);
 
-  const isAdmin = user?.email === 'noutpelgrim@hotmail.com' || user?.email === 'nout@replyvera.com';
+  const isAdmin = user?.email === 'noutpelgrim@hotmail.com' || user?.user_metadata?.role === 'admin' || user?.app_metadata?.role === 'admin';
   const isAgency = tier === 'agency';
 
   const tabs = [
