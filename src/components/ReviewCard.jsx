@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 const ReviewCard = ({ review, onApprove, onRegenerate }) => {
   const [draft, setDraft] = React.useState(review.drafted_reply);
   const [isEditing, setIsEditing] = useState(false);
+  const [isRegenerating, setIsRegenerating] = useState(false);
   
   // Sync local draft state with props when AI regenerates
   React.useEffect(() => {
@@ -162,18 +163,29 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
       ) : (
         <div style={{ display: 'flex', gap: '12px', justifyContent: 'flex-end' }}>
           <button
-            onClick={() => onRegenerate(review.id)}
+            disabled={isRegenerating}
+            onClick={async () => {
+              setIsRegenerating(true);
+              try {
+                await onRegenerate(review.id);
+              } finally {
+                setIsRegenerating(false);
+              }
+            }}
             style={{
               padding: '10px 20px',
               borderRadius: '8px',
-              background: 'transparent',
+              background: isRegenerating ? '#f1f5f9' : 'transparent',
               border: '1px solid hsl(var(--border))',
-              color: 'hsl(var(--text-muted))',
+              color: isRegenerating ? '#94a3b8' : 'hsl(var(--text-muted))',
               fontSize: '0.9rem',
-              cursor: 'pointer'
+              cursor: isRegenerating ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
             }}
           >
-            🔄 Regenerate
+            {isRegenerating ? '⏳ Regenerating...' : '🔄 Regenerate'}
           </button>
           <button
             onClick={() => onApprove(review.id, draft)}

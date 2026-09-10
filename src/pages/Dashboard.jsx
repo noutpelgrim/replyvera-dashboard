@@ -173,10 +173,14 @@ export default function Dashboard() {
       if (res.ok) {
         const updatedReview = await res.json();
         // Update local state with the new draft
-        setReviews(reviews.map(r => r.id === id ? updatedReview : r));
+        setReviews(prev => prev.map(r => r.id === id ? { ...r, ...updatedReview } : r));
+      } else {
+        const errData = await res.json().catch(() => ({}));
+        alert(`Regeneration failed: ${errData.error || 'Server error'}`);
       }
     } catch (err) {
       console.error('Regeneration failed:', err);
+      alert('Failed to connect to backend server.');
     }
   };
 
