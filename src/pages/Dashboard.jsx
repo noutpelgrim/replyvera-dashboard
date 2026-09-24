@@ -139,6 +139,8 @@ export default function Dashboard() {
       console.error('Approval failed:', err);
       alert('Network error - check if backend is running.');
     }
+  };
+
   // 2.5 Handle Save Draft to Database
   const handleSaveDraft = async (id, draftText) => {
     try {
