@@ -139,6 +139,26 @@ export default function Dashboard() {
       console.error('Approval failed:', err);
       alert('Network error - check if backend is running.');
     }
+  // 2.5 Handle Save Draft to Database
+  const handleSaveDraft = async (id, draftText) => {
+    try {
+      const res = await fetch(`${API_BASE}/reviews/${id}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ drafted_reply: draftText, status: 'NEEDS_APPROVAL' })
+      });
+      if (res.ok) {
+        const updated = await res.json();
+        setReviews(prev => prev.map(r => r.id === id ? { ...r, ...updated, drafted_reply: draftText, status: 'NEEDS_APPROVAL' } : r));
+        return updated;
+      } else {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.error || 'Failed to save draft');
+      }
+    } catch (err) {
+      console.error('Draft save failed:', err);
+      throw err;
+    }
   };
 
   // 3. Handle Settings Save
@@ -317,6 +337,7 @@ export default function Dashboard() {
                   review={review} 
                   onApprove={handleApprove}
                   onRegenerate={handleRegenerate}
+                  onSaveDraft={handleSaveDraft}
                 />
               ))
             ) : (

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 
-const ReviewCard = ({ review, onApprove, onRegenerate }) => {
+const ReviewCard = ({ review, onApprove, onRegenerate, onSaveDraft }) => {
   const [draft, setDraft] = React.useState(review.drafted_reply);
   const [isEditing, setIsEditing] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState('');
   
   // Sync local draft state with props when AI regenerates
   React.useEffect(() => {
@@ -135,14 +137,47 @@ const ReviewCard = ({ review, onApprove, onRegenerate }) => {
         border: '1px solid #e2e8f0',
         borderRadius: '12px'
       }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px', alignItems: 'center' }}>
           <span style={{ fontSize: '0.8rem', fontWeight: '600', color: 'hsl(var(--primary))' }}>✨ Vera's Suggested Reply</span>
-          <button
-            onClick={() => setIsEditing(!isEditing)}
-            style={{ background: 'transparent', color: 'hsl(var(--text-muted))', fontSize: '0.8rem' }}
-          >
-            {isEditing ? 'Save' : 'Edit Draft'}
-          </button>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            {saveMessage && <span style={{ fontSize: '0.75rem', color: '#10B981', fontWeight: '600' }}>{saveMessage}</span>}
+            <button
+              disabled={isSaving}
+              onClick={async () => {
+                if (isEditing) {
+                  setIsSaving(true);
+                  setSaveMessage('');
+                  try {
+                    if (onSaveDraft) {
+                      await onSaveDraft(review.id, draft);
+                    }
+                    setSaveMessage('Saved in database!');
+                    setTimeout(() => setSaveMessage(''), 3000);
+                    setIsEditing(false);
+                  } catch (err) {
+                    console.error('Failed to save draft:', err);
+                    alert('Failed to save draft in database.');
+                  } finally {
+                    setIsSaving(false);
+                  }
+                } else {
+                  setIsEditing(true);
+                }
+              }}
+              style={{
+                background: isEditing ? 'hsl(var(--primary))' : 'transparent',
+                color: isEditing ? 'white' : 'hsl(var(--text-muted))',
+                fontSize: '0.8rem',
+                padding: isEditing ? '4px 12px' : '0',
+                borderRadius: '6px',
+                border: 'none',
+                cursor: 'pointer',
+                fontWeight: '600'
+              }}
+            >
+              {isSaving ? '⏳ Saving...' : isEditing ? '💾 Save Draft' : '✏️ Edit Draft'}
+            </button>
+          </div>
         </div>
 
         {isEditing ? (
